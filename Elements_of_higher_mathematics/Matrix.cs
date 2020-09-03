@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 
 namespace Elements_of_higher_mathematics
 {
@@ -10,7 +11,7 @@ namespace Elements_of_higher_mathematics
         /// </summary>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Определитель квадратной матрицы. </returns>
-        public int FindDeterminant(int[,] matrix)
+        public int FindDeterminantOfTheSecondOrder(int[,] matrix)
         {          
             var columnLength = matrix.GetLength(0); // длина колонки.
             var rowLength = matrix.GetLength(1); // длина строки.
@@ -18,14 +19,14 @@ namespace Elements_of_higher_mathematics
             var mainDiagonal = FindMainDiagonal(columnLength, rowLength, matrix); // главная диагональ.
             var sideDiagonal = FindSideDiagonal(columnLength, rowLength, matrix); // побочная диагональ.
 
-            var determinant = mainDiagonal - sideDiagonal; // Вычисление определителя квадратной матрицы.
+            var determinantOfTheSecondOrder = mainDiagonal - sideDiagonal; // Вычисление определителя квадратной матрицы.
 
             if (columnLength == 1 && rowLength == 1)
             {
-                determinant = mainDiagonal;
+                determinantOfTheSecondOrder = mainDiagonal;
             }
 
-            return determinant;
+            return determinantOfTheSecondOrder;
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace Elements_of_higher_mathematics
 
             var newMatrix = GetChangedMinorMatrix(matrix, columnLength, rowLength, num1, num2); //Изменение матрицы.
 
-            var minor = FindDeterminant(newMatrix); //Вычисление определителя квадратной матрицы.
+            var minor = FindDeterminantOfTheSecondOrder(newMatrix); //Вычисление определителя квадратной матрицы.
 
             return minor;
         }
@@ -53,13 +54,60 @@ namespace Elements_of_higher_mathematics
         /// <param name="matrix"> Матрица. </param>
         /// <param name="num1"> Колонка. </param>
         /// <param name="num2"> Строка. </param>
-        /// <returns> Алгебраическое доболнение квадратной матрицы. </returns>
+        /// <returns> Алгебраическое дополнение квадратной матрицы. </returns>
         public int FindCofactor(int[,] matrix, int num1, int num2)
         {
             var cofactor = (int)Math.Pow(-1, num1 + num2) * FindMinor(matrix, num1, num2);
 
             return cofactor;
         }
+
+
+        /// <summary>
+        /// Метод нахождения определителя.
+        /// </summary>
+        /// <param name="matrix"> Матрица. </param>
+        /// <param name="num"> Строка или столбик. </param>
+        /// <param name="enumMatrix"> переключатель между строкой или столбиком. </param>
+        /// <returns> Определитель. </returns>
+        public int FindDeterminant(int[,] matrix, int num, enumMatrix enumMatrix = enumMatrix.row)
+        {
+            var ListRowsOrColumns = new List<int>();
+            var determinant = 0;
+
+            if (enumMatrix == enumMatrix.row)
+            {
+                var rowLength = matrix.GetLength(1); // длина строки.
+
+                for (int i = 0; i < rowLength; i++)
+                {
+                    ListRowsOrColumns.Add(matrix[num - 1, i]);
+                }
+
+                for (int i = 0; i < ListRowsOrColumns.Count; i++)
+                {
+                    determinant += ListRowsOrColumns[i] * FindCofactor(matrix, num, i + 1);
+                }
+            }
+            else if (enumMatrix == enumMatrix.column)
+            {
+                var columnLength = matrix.GetLength(0); // длина колонки.
+
+                for (int i = 0; i < columnLength; i++)
+                {
+                    ListRowsOrColumns.Add(matrix[i, num - 1]);
+                }
+
+                for (int i = 0; i < ListRowsOrColumns.Count; i++)
+                {
+                    determinant += ListRowsOrColumns[i] * FindCofactor(matrix, i + 1, num);
+                }
+
+            }
+
+            return determinant;
+        }
+
 
         /// <summary>
         /// Получает главную диагональ.
