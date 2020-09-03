@@ -48,43 +48,18 @@ namespace Elements_of_higher_mathematics
         }
 
         /// <summary>
-        /// Метод изменения матрицы для Minor метода.
+        /// Метод нахождения алгебраического доболнения.
         /// </summary>
-        /// <param name="columnLength"> Длина колонки матрицы. </param>
-        /// <param name="rowLength"> Длина строки матрицы. </param>
         /// <param name="matrix"> Матрица. </param>
-        /// <param name="column"> Колонка. </param>
-        /// <param name="row"> Строка. </param>
-        /// <returns> Изменненая марица. </returns>
-        private int[,] GetChangedMinorMatrix(int[,] matrix, int columnLength, int rowLength, int column, int row)
+        /// <param name="num1"> Колонка. </param>
+        /// <param name="num2"> Строка. </param>
+        /// <returns> Алгебраическое доболнение квадратной матрицы. </returns>
+        public int FindCofactor(int[,] matrix, int num1, int num2)
         {
-            var newMatrix = new int[rowLength - 1, columnLength - 1];
+            var cofactor = (int)Math.Pow(-1, num1 + num2) * FindMinor(matrix, num1, num2);
 
-            var list = new List<int>(); //Вспомогательный список.
-            var num = 0; //Вспомогательная переменная для заполнения массива.
-
-            for (int i = 0; i < columnLength; i++)
-            {
-                for (int j = 0; j < rowLength; j++)
-                {
-                    if (i != column - 1 && j != row - 1)
-                    {
-                        list.Add(matrix[i, j]);
-                    }
-                }
-            }
-            
-            for (int i = 0; i < columnLength - 1; i++)
-            {
-                for (int j = 0; j < rowLength - 1; j++)
-                {
-                    newMatrix[i, j] = list[num++];
-                }
-            }
-
-            return newMatrix;
+            return cofactor;
         }
-
 
         /// <summary>
         /// Получает главную диагональ.
@@ -146,6 +121,70 @@ namespace Elements_of_higher_mathematics
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Метод изменения матрицы для Minor метода.
+        /// </summary>
+        /// <param name="columnLength"> Длина колонки матрицы. </param>
+        /// <param name="rowLength"> Длина строки матрицы. </param>
+        /// <param name="matrix"> Матрица. </param>
+        /// <param name="column"> Колонка. </param>
+        /// <param name="row"> Строка. </param>
+        /// <returns> Изменненая марица. </returns>
+        private int[,] GetChangedMinorMatrix(int[,] matrix, int columnLength, int rowLength, int column, int row)
+        {
+            #region Проверка условий
+            try
+            {
+                if (column > columnLength)
+                {
+                    throw new Exception("column не может быть больше чем columnLength");
+                }
+                if (row > rowLength)
+                {
+                    throw new Exception("row не может быть больше чем rowLength");
+                }
+                if (column < 0)
+                {
+                    throw new Exception("column не может быть меньше чем 0");
+                }
+                if (row < 0)
+                {
+                    throw new Exception("row не может быть меньше чем 0");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            #endregion
+
+            var newMatrix = new int[rowLength - 1, columnLength - 1];
+
+            var list = new List<int>(); //Вспомогательный список.
+            var num = 0; //Вспомогательная переменная для заполнения массива.
+
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    if (i != column - 1 && j != row - 1)
+                    {
+                        list.Add(matrix[i, j]);
+                    }
+                }
+            }
+
+            for (int i = 0; i < columnLength - 1; i++)
+            {
+                for (int j = 0; j < rowLength - 1; j++)
+                {
+                    newMatrix[i, j] = list[num++];
+                }
+            }
+
+            return newMatrix;
         }
 
     }
