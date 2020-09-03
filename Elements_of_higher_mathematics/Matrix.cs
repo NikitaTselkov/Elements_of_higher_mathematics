@@ -1,26 +1,90 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Elements_of_higher_mathematics
 {
     class Matrix
     {
         /// <summary>
-        /// Метод нахождения определителя матрицы.
+        /// Метод нахождения определителя квадратной матрицы.
         /// </summary>
         /// <param name="matrix"> Матрица. </param>
-        /// <returns> Определитель. </returns>
+        /// <returns> Определитель квадратной матрицы. </returns>
         public int FindDeterminant(int[,] matrix)
         {          
-            var rowLength = matrix.GetLength(1); // длина строки.
             var columnLength = matrix.GetLength(0); // длина колонки.
+            var rowLength = matrix.GetLength(1); // длина строки.
 
             var mainDiagonal = FindMainDiagonal(columnLength, rowLength, matrix); // главная диагональ.
             var sideDiagonal = FindSideDiagonal(columnLength, rowLength, matrix); // побочная диагональ.
 
-            var determinant = mainDiagonal - sideDiagonal; // Вычисление определителя.
+            var determinant = mainDiagonal - sideDiagonal; // Вычисление определителя квадратной матрицы.
+
+            if (columnLength == 1 && rowLength == 1)
+            {
+                determinant = mainDiagonal;
+            }
 
             return determinant;
         }
+
+        /// <summary>
+        /// Метод нахождения минора квадратной матрицы.
+        /// </summary>
+        /// <param name="matrix"> Матрица. </param>
+        /// <param name="num1"> Колонка. </param>
+        /// <param name="num2"> Строка. </param>
+        /// <returns> Минор квадратной матрицы. </returns>
+        public int FindMinor(int[,] matrix, int num1, int num2)
+        {
+            var columnLength = matrix.GetLength(0); // длина колонки.
+            var rowLength = matrix.GetLength(1); // длина строки.
+
+            var newMatrix = GetChangedMinorMatrix(matrix, columnLength, rowLength, num1, num2); //Изменение матрицы.
+
+            var minor = FindDeterminant(newMatrix); //Вычисление определителя квадратной матрицы.
+
+            return minor;
+        }
+
+        /// <summary>
+        /// Метод изменения матрицы для Minor метода.
+        /// </summary>
+        /// <param name="columnLength"> Длина колонки матрицы. </param>
+        /// <param name="rowLength"> Длина строки матрицы. </param>
+        /// <param name="matrix"> Матрица. </param>
+        /// <param name="column"> Колонка. </param>
+        /// <param name="row"> Строка. </param>
+        /// <returns> Изменненая марица. </returns>
+        private int[,] GetChangedMinorMatrix(int[,] matrix, int columnLength, int rowLength, int column, int row)
+        {
+            var newMatrix = new int[rowLength - 1, columnLength - 1];
+
+            var list = new List<int>(); //Вспомогательный список.
+            var num = 0; //Вспомогательная переменная для заполнения массива.
+
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    if (i != column - 1 && j != row - 1)
+                    {
+                        list.Add(matrix[i, j]);
+                    }
+                }
+            }
+            
+            for (int i = 0; i < columnLength - 1; i++)
+            {
+                for (int j = 0; j < rowLength - 1; j++)
+                {
+                    newMatrix[i, j] = list[num++];
+                }
+            }
+
+            return newMatrix;
+        }
+
 
         /// <summary>
         /// Получает главную диагональ.
@@ -40,7 +104,6 @@ namespace Elements_of_higher_mathematics
                     if (i == j)
                     {
                         result *= matrix[i, j];
-                        Console.WriteLine(matrix[i, j]);
                     }
                 }
             }
@@ -54,7 +117,7 @@ namespace Elements_of_higher_mathematics
         /// <param name="columnLength"> Длина колонки матрицы. </param>
         /// <param name="rowLength"> Длина строки матрицы. </param>
         /// <param name="matrix"> Матрица. </param>
-        /// <returns> побочная диагональ. </returns>
+        /// <returns> Побочная диагональ. </returns>
         private int FindSideDiagonal(int columnLength, int rowLength, int[,] matrix)
         {
             var result = 1;
@@ -73,7 +136,6 @@ namespace Elements_of_higher_mathematics
                             number++;
                             isRepeat = true;
                             result *= matrix[i, j];
-                            Console.WriteLine(matrix[i, j]);
                         }
                         else
                         {

@@ -9,14 +9,16 @@ namespace Elements_of_higher_mathematics
 
             Matrix matrix = new Matrix();
 
-            var array = new int[3, 3] { { 7, 8, 6 }, { 2, 2, 2 }, { 9, 3, 3 } };
+            var array = new int[3, 3] { { 4, -5, 3 }, { 2, 0, -1 }, { -4, 7, 12 } };
 
-            var array2 = new int[2, 2] { { 7, 8 }, { 9, 3 } };
+            var array2 = new int[2, 2] { { 1, 2 }, { 4, 5 } };
 
             var array3 = new int[4, 4] { { 7, 8, 6, 4 }, { 2, 2, 2, 4 }, { 9, 3, 3, 3 }, {5, -2, 1, 0 } };
 
 
-            Console.WriteLine(matrix.FindDeterminant(array));
+            //Console.WriteLine(matrix.FindDeterminant(array3));
+
+            Console.WriteLine(matrix.FindMinor(array2, 1, 1));
 
         }
 
