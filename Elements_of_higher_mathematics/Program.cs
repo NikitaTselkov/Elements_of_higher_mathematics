@@ -13,28 +13,22 @@ namespace Elements_of_higher_mathematics
 
             var array2 = new int[2, 2] { { 1, 2 }, { 4, 5 } };
 
-            var array3 = new int[4, 4] { { 6, 8, 9, -12 }, { 4, 6, -6, -9 }, { -3, -4, 6, 8 }, {-2, -3, 4, 6 } };
+            var array3 = new int[4, 4] { { -1, 3, 2, -3 }, { 4, -2, 5, 1 }, { -5, 0, 4, 0 }, {9, 7, 8, -7 } };
 
-            var array4 = new int[3, 3] { { 2, 3, 2 }, { 1, 2, -3 }, { 3, 4, 1 } };
+            var test = new int[4, 4] { { 2, 4, 1, 1 }, { 0, 2, 0, 0 }, { 2, 1, 1, 3 }, {4, 0, 2, 3 } };
+
+            var array4 = new int[3, 3] { { 5, 7, 1 }, { -4, 1, 0 }, { 2, 0, 3 } };
 
 
 
-            // Console.WriteLine($" Определитель второго порядка: {matrix.FindDeterminantOfTheSecondOrder(array)}");
+            Console.WriteLine($" Определитель второго порядка: {matrix.FindDeterminantOfTheSecondOrder(array)}");
 
-            // Console.WriteLine($" Минор: {matrix.FindMinor(array, 3, 2)}");
+            Console.WriteLine($" Минор: {matrix.FindMinor(array4, 1, 2)}");
 
-            // Console.WriteLine($" Алгебраическое дополнение: {matrix.FindCofactor(array, 3, 2)}");
+           Console.WriteLine($" Алгебраическое дополнение: {matrix.FindCofactor(array4, 2, 1)}");
 
-            Console.WriteLine($" Определитель: {matrix.FindDeterminant(array4, 3)}");
+           Console.WriteLine($" Определитель: {matrix.FindDeterminant(array, 1, enumMatrix.column)}");
 
-            Console.WriteLine($" Определитель: {matrix.FindDeterminant(array3, 1, enumMatrix.column)}");
-            Console.WriteLine($" Определитель: {matrix.FindDeterminant(array3, 2, enumMatrix.column)}");
-            Console.WriteLine($" Определитель: {matrix.FindDeterminant(array3, 3, enumMatrix.column)}");
-            Console.WriteLine($" Определитель: {matrix.FindDeterminant(array3, 4, enumMatrix.column)}");
-            Console.WriteLine($" Определитель: {matrix.FindDeterminant(array3, 1, enumMatrix.row)}");
-            Console.WriteLine($" Определитель: {matrix.FindDeterminant(array3, 2, enumMatrix.row)}");
-            Console.WriteLine($" Определитель: {matrix.FindDeterminant(array3, 3, enumMatrix.row)}");
-            Console.WriteLine($" Определитель: {matrix.FindDeterminant(array3, 4, enumMatrix.row)}");
 
         }
 

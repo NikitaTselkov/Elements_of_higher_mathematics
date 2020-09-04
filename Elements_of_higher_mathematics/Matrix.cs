@@ -7,10 +7,10 @@ namespace Elements_of_higher_mathematics
     class Matrix
     {
         /// <summary>
-        /// Метод нахождения определителя квадратной матрицы.
+        /// Метод нахождения определителя квадратной матрицы второго порядка.
         /// </summary>
         /// <param name="matrix"> Матрица. </param>
-        /// <returns> Определитель квадратной матрицы. </returns>
+        /// <returns> Определитель квадратной матрицы второго порядка. </returns>
         public int FindDeterminantOfTheSecondOrder(int[,] matrix)
         {          
             var columnLength = matrix.GetLength(0); // длина колонки.
@@ -19,7 +19,7 @@ namespace Elements_of_higher_mathematics
             var mainDiagonal = FindMainDiagonal(columnLength, rowLength, matrix); // главная диагональ.
             var sideDiagonal = FindSideDiagonal(columnLength, rowLength, matrix); // побочная диагональ.
 
-            var determinantOfTheSecondOrder = mainDiagonal - sideDiagonal; // Вычисление определителя квадратной матрицы.
+            var determinantOfTheSecondOrder = mainDiagonal - sideDiagonal; // Вычисление определителя квадратной матрицы второго порядка.
 
             if (columnLength == 1 && rowLength == 1)
             {
@@ -27,6 +27,34 @@ namespace Elements_of_higher_mathematics
             }
 
             return determinantOfTheSecondOrder;
+        }
+
+        /// <summary>
+        ///  Метод нахождения определителя квадратной матрицы третьего порядка.
+        /// </summary>
+        /// <param name="matrix"> Матрица. </param>
+        /// <returns> Определитель квадратной матрицы третьего порядка. </returns>
+        public int FindDeterminantOfTheThirdOrder(int[,] matrix)
+        {
+            #region Kоординаты вершин треугольников
+
+            var mainDiagonal = matrix[0, 0] * matrix[1, 1] * matrix[2, 2];
+
+            var firstPlusTriangle = matrix[0, 1] * matrix[1, 2] * matrix[2, 0];
+
+            var secondPlusTriangle = matrix[0, 2] * matrix[1, 0] * matrix[2, 1];
+
+            var sideDiagonal = matrix[0, 2] * matrix[1, 1] * matrix[2, 0];
+
+            var firstMinusTriangle = matrix[0, 1] * matrix[1, 0] * matrix[2, 2];
+
+            var secondMinusTriangle = matrix[0, 0] * matrix[1, 2] * matrix[2, 1];
+
+            var determinantOfTheThirdOrder = mainDiagonal + firstPlusTriangle + secondPlusTriangle - sideDiagonal - firstMinusTriangle - secondMinusTriangle;
+
+            #endregion
+
+            return determinantOfTheThirdOrder;
         }
 
         /// <summary>
@@ -41,9 +69,18 @@ namespace Elements_of_higher_mathematics
             var columnLength = matrix.GetLength(0); // длина колонки.
             var rowLength = matrix.GetLength(1); // длина строки.
 
-            var newMatrix = GetChangedMinorMatrix(matrix, columnLength, rowLength, num1, num2); //Изменение матрицы.
+            var newMatrix = GetChangedMinorMatrix(matrix, columnLength, rowLength, num1, num2); // Изменение матрицы.
 
-            var minor = FindDeterminantOfTheSecondOrder(newMatrix); //Вычисление определителя квадратной матрицы.
+            int minor;
+
+            if (rowLength > 3 || columnLength > 3)
+            {
+                minor = FindDeterminantOfTheThirdOrder(newMatrix); // Вычисление определителя матрицы 3-ого порядка.
+            }
+            else
+            {
+                minor = FindDeterminantOfTheSecondOrder(newMatrix); // Вычисление определителя матрицы 2-ого порядка.
+            }
 
             return minor;
         }
@@ -61,7 +98,6 @@ namespace Elements_of_higher_mathematics
 
             return cofactor;
         }
-
 
         /// <summary>
         /// Метод нахождения определителя.
