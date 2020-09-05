@@ -6,8 +6,9 @@ namespace Elements_of_higher_mathematics
     {
         static void Main(string[] args)
         {
+            # region squareMatrix
 
-            Matrix matrix = new Matrix();
+            SquareMatrix squareMatrix = new SquareMatrix();
 
             var array = new int[3, 3] { { 7, -4, 2 }, { -2, 3, 0 }, { 5, -1, -8 } };
 
@@ -21,35 +22,30 @@ namespace Elements_of_higher_mathematics
 
 
 
-            Console.WriteLine($" Определитель второго порядка: {matrix.FindDeterminantOfTheSecondOrder(array)}");
+            Console.WriteLine($" Определитель второго порядка: {squareMatrix.FindDeterminantOfTheSecondOrder(array2)}");
 
-            Console.WriteLine($" Минор: {matrix.FindMinor(array4, 1, 2)}");
+            Console.WriteLine($" Минор: {squareMatrix.FindMinor(array4, 1, 2)}");
 
-           Console.WriteLine($" Алгебраическое дополнение: {matrix.FindCofactor(array4, 2, 1)}");
+            Console.WriteLine($" Алгебраическое дополнение: {squareMatrix.FindCofactor(array4, 1, 2)}");
 
-           Console.WriteLine($" Определитель: {matrix.FindDeterminant(array, 1, enumMatrix.column)}");
+            Console.WriteLine($" Определитель: {squareMatrix.FindDeterminant(array, 1, enumMatrix.column)}");
+
+            Matrix matrix = new Matrix();
+
+            #endregion
 
 
-        }
+            var array5 = new int[2, 3] { { 2, 3, -1 }, { 6, 1, -2 } };
 
-        private static int InputNum()
-        {
-            int num;
+            var array6 = new int[3, 2] { { 4, -5 }, { -3, 0 }, { 1, 2 } };
 
-            do
+            var result = matrix.MatrixMultiplication(array, array4);
+
+            foreach (var item in result)
             {
-                Console.WriteLine("Введите число");
+                Console.WriteLine(item);
+            }
 
-                var input = Console.ReadLine();
-
-                if (int.TryParse(input, out num))
-                {
-                    break;
-                }
-
-            } while (true);
-
-            return num;
         }
     }
 }
