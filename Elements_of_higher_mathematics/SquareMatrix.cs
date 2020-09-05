@@ -142,7 +142,6 @@ namespace Elements_of_higher_mathematics
             return determinant;
         }
 
-
         /// <summary>
         /// Получает главную диагональ.
         /// </summary>

@@ -6,6 +6,12 @@ namespace Elements_of_higher_mathematics
 {
     public class Matrix
     {
+        /// <summary>
+        /// Метод перемножения матриц.
+        /// </summary>
+        /// <param name="matrixA"> Матрица А. </param>
+        /// <param name="matrixB"> Матрица В. </param>
+        /// <returns> результат перемножения матриц. </returns>
         public int[,] MatrixMultiplication(int[,] matrixA, int[,] matrixB)
         {
             var matrixAColumnLength = matrixA.GetLength(0); // длина колонки матрицы А.
@@ -14,41 +20,21 @@ namespace Elements_of_higher_mathematics
             var matrixBColumnLength = matrixB.GetLength(0); // длина колонки матрицы В. 
             var matrixBRowLength = matrixB.GetLength(1); // длина строки матрицы В.
 
-            int[,] newMatrix = default;
+            int[,] newMatrix = new int[matrixAColumnLength, matrixBRowLength]; // новая матрица.
 
             if (matrixARowLength == matrixBColumnLength)
             {
-                newMatrix = new int[matrixAColumnLength, matrixBRowLength]; // новая матрица.
-                var columnLength = newMatrix.GetLength(0); // длина колонки новой матрицы. 
-                var rowLength = newMatrix.GetLength(1); // длина строки новой матрицы.
-
-                for (int i = 0; i < columnLength; i++)
+                int sum;
+                for (int i = 0; i < matrixAColumnLength; i++)
                 {
-                    for (int j = 0; j < rowLength; j++)
+                    for (int j = 0; j < matrixBRowLength; j++)
                     {
-                        var result = 0;
-                        var res = 0;
-
-                        int Aj = 0;
-                        int Bi = 0;
-
-                        cycle:
-
-                        if (Aj < matrixARowLength)
+                        sum = 0;
+                        for (int k = 0; k < matrixARowLength; k++)
                         {
-                            res = matrixA[i, Aj];
-                            Aj++;
+                            sum = sum + (matrixA[i, k] * matrixB[k, j]);
                         }
-                        if (Bi < matrixBColumnLength)
-                        {
-                            res *= matrixB[Bi, j];
-                            Bi++;
-                            result += res;
-
-                            goto cycle;
-                        }
-
-                        newMatrix[i, j] = result;
+                        newMatrix[i, j] = sum;
                     }
                 }
             }

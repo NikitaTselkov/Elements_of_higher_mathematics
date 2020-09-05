@@ -39,7 +39,7 @@ namespace Elements_of_higher_mathematics
 
             var array6 = new int[3, 2] { { 4, -5 }, { -3, 0 }, { 1, 2 } };
 
-            var result = matrix.MatrixMultiplication(array, array4);
+            var result = matrix.MatrixMultiplication(array5, array6);
 
             foreach (var item in result)
             {
