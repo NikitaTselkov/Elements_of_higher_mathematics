@@ -107,7 +107,6 @@ namespace Elements_of_higher_mathematics
         /// <returns> Определитель. </returns>
         public int FindDeterminant(int[,] matrix, int num, enumMatrix enumMatrix = enumMatrix.row)
         {
-            var ListRowsOrColumns = new List<int>();
             var determinant = 0;
 
             if (enumMatrix == enumMatrix.row)
@@ -116,12 +115,7 @@ namespace Elements_of_higher_mathematics
 
                 for (int i = 0; i < rowLength; i++)
                 {
-                    ListRowsOrColumns.Add(matrix[num - 1, i]);
-                }
-
-                for (int i = 0; i < ListRowsOrColumns.Count; i++)
-                {
-                    determinant += ListRowsOrColumns[i] * FindCofactor(matrix, num, i + 1);
+                    determinant += matrix[num - 1, i] * FindCofactor(matrix, num, i + 1);
                 }
             }
             else if (enumMatrix == enumMatrix.column)
@@ -130,12 +124,7 @@ namespace Elements_of_higher_mathematics
 
                 for (int i = 0; i < columnLength; i++)
                 {
-                    ListRowsOrColumns.Add(matrix[i, num - 1]);
-                }
-
-                for (int i = 0; i < ListRowsOrColumns.Count; i++)
-                {
-                    determinant += ListRowsOrColumns[i] * FindCofactor(matrix, i + 1, num);
+                    determinant += matrix[i, num - 1] * FindCofactor(matrix, i + 1, num);
                 }
             }
 
