@@ -10,10 +10,10 @@ namespace Elements_of_higher_mathematics
         /// </summary>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Определитель квадратной матрицы второго порядка. </returns>
-        public int FindDeterminantOfTheSecondOrder(int[,] matrix)
+        public int FindDeterminantOfTheSecondOrder(Matrix matrix)
         {          
-            var columnLength = matrix.GetLength(0); // длина колонки.
-            var rowLength = matrix.GetLength(1); // длина строки.
+            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки.
+            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки.
 
             var mainDiagonal = FindMainDiagonal(columnLength, rowLength, matrix); // главная диагональ.
             var sideDiagonal = FindSideDiagonal(columnLength, rowLength, matrix); // побочная диагональ.
@@ -33,9 +33,11 @@ namespace Elements_of_higher_mathematics
         /// </summary>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Определитель квадратной матрицы третьего порядка. </returns>
-        public int FindDeterminantOfTheThirdOrder(int[,] matrix)
+        public int FindDeterminantOfTheThirdOrder(Matrix _matrix)
         {
             #region Kоординаты вершин треугольников
+
+            var matrix = _matrix.MatrixValue;
 
             var mainDiagonal = matrix[0, 0] * matrix[1, 1] * matrix[2, 2];
 
@@ -63,10 +65,10 @@ namespace Elements_of_higher_mathematics
         /// <param name="num1"> Колонка. </param>
         /// <param name="num2"> Строка. </param>
         /// <returns> Минор квадратной матрицы. </returns>
-        public int FindMinor(int[,] matrix, int num1, int num2)
+        public int FindMinor(Matrix matrix, int num1, int num2)
         {
-            var columnLength = matrix.GetLength(0); // длина колонки.
-            var rowLength = matrix.GetLength(1); // длина строки.
+            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки.
+            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки.
 
             var newMatrix = GetChangedMinorMatrix(matrix, columnLength, rowLength, num1, num2); // Изменение матрицы.
 
@@ -91,7 +93,7 @@ namespace Elements_of_higher_mathematics
         /// <param name="num1"> Колонка. </param>
         /// <param name="num2"> Строка. </param>
         /// <returns> Алгебраическое дополнение квадратной матрицы. </returns>
-        public int FindCofactor(int[,] matrix, int num1, int num2)
+        public int FindCofactor(Matrix matrix, int num1, int num2)
         {
             var cofactor = (int)Math.Pow(-1, num1 + num2) * FindMinor(matrix, num1, num2);
 
@@ -105,26 +107,26 @@ namespace Elements_of_higher_mathematics
         /// <param name="num"> Строка или столбик. </param>
         /// <param name="enumMatrix"> переключатель между строкой или столбиком. </param>
         /// <returns> Определитель. </returns>
-        public int FindDeterminant(int[,] matrix, int num, enumMatrix enumMatrix = enumMatrix.row)
+        public int FindDeterminant(Matrix matrix, int num, enumMatrix enumMatrix = enumMatrix.row)
         {
             var determinant = 0;
 
             if (enumMatrix == enumMatrix.row)
             {
-                var rowLength = matrix.GetLength(1); // длина строки.
+                var rowLength = matrix.MatrixValue.GetLength(1); // длина строки.
 
                 for (int i = 0; i < rowLength; i++)
                 {
-                    determinant += matrix[num - 1, i] * FindCofactor(matrix, num, i + 1);
+                    determinant += matrix.MatrixValue[num - 1, i] * FindCofactor(matrix, num, i + 1);
                 }
             }
             else if (enumMatrix == enumMatrix.column)
             {
-                var columnLength = matrix.GetLength(0); // длина колонки.
+                var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки.
 
                 for (int i = 0; i < columnLength; i++)
                 {
-                    determinant += matrix[i, num - 1] * FindCofactor(matrix, i + 1, num);
+                    determinant += matrix.MatrixValue[i, num - 1] * FindCofactor(matrix, i + 1, num);
                 }
             }
 
@@ -138,7 +140,7 @@ namespace Elements_of_higher_mathematics
         /// <param name="rowLength"> Длина строки матрицы. </param>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Главная диагональ. </returns>
-        private int FindMainDiagonal(int columnLength, int rowLength, int[,] matrix)
+        private int FindMainDiagonal(int columnLength, int rowLength, Matrix matrix)
         {
             var result = 1;
 
@@ -148,7 +150,7 @@ namespace Elements_of_higher_mathematics
                 {
                     if (i == j)
                     {
-                        result *= matrix[i, j];
+                        result *= matrix.MatrixValue[i, j];
                     }
                 }
             }
@@ -163,7 +165,7 @@ namespace Elements_of_higher_mathematics
         /// <param name="rowLength"> Длина строки матрицы. </param>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Побочная диагональ. </returns>
-        private int FindSideDiagonal(int columnLength, int rowLength, int[,] matrix)
+        private int FindSideDiagonal(int columnLength, int rowLength, Matrix matrix)
         {
             var result = 1;
             var number = 0;
@@ -180,7 +182,7 @@ namespace Elements_of_higher_mathematics
                         {
                             number++;
                             isRepeat = true;
-                            result *= matrix[i, j];
+                            result *= matrix.MatrixValue[i, j];
                         }
                         else
                         {
@@ -202,7 +204,7 @@ namespace Elements_of_higher_mathematics
         /// <param name="column"> Колонка. </param>
         /// <param name="row"> Строка. </param>
         /// <returns> Изменненая марица. </returns>
-        private int[,] GetChangedMinorMatrix(int[,] matrix, int columnLength, int rowLength, int column, int row)
+        private Matrix GetChangedMinorMatrix(Matrix matrix, int columnLength, int rowLength, int column, int row)
         {
             #region Проверка условий
             try
@@ -230,7 +232,7 @@ namespace Elements_of_higher_mathematics
             }
             #endregion
 
-            var newMatrix = new int[rowLength - 1, columnLength - 1];
+            var newMatrix = new Matrix(new int[rowLength - 1, columnLength - 1]);
 
             var list = new List<int>(); //Вспомогательный список.
             var num = 0; //Вспомогательная переменная для заполнения массива.
@@ -241,7 +243,7 @@ namespace Elements_of_higher_mathematics
                 {
                     if (i != column - 1 && j != row - 1)
                     {
-                        list.Add(matrix[i, j]);
+                        list.Add(matrix.MatrixValue[i, j]);
                     }
                 }
             }
@@ -250,7 +252,7 @@ namespace Elements_of_higher_mathematics
             {
                 for (int j = 0; j < rowLength - 1; j++)
                 {
-                    newMatrix[i, j] = list[num++];
+                    newMatrix.MatrixValue[i, j] = list[num++];
                 }
             }
 

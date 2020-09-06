@@ -10,15 +10,15 @@ namespace Elements_of_higher_mathematics
 
             SquareMatrix squareMatrix = new SquareMatrix();
 
-            var array = new int[3, 3] { { 7, -4, 2 }, { -2, 3, 0 }, { 5, -1, -8 } };
+            var array = new Matrix(new int[3, 3] { { 7, -4, 2 }, { -2, 3, 0 }, { 5, -1, -8 } });
 
-            var array2 = new int[2, 2] { { 1, 2 }, { 4, 5 } };
+            var array2 = new Matrix(new int[2, 2] { { 1, 2 }, { 4, 5 } });
 
-            var array3 = new int[4, 4] { { -1, 3, 2, -3 }, { 4, -2, 5, 1 }, { -5, 0, 4, 0 }, {9, 7, 8, -7 } };
+            var array3 = new Matrix(new int[4, 4] { { -1, 3, 2, -3 }, { 4, -2, 5, 1 }, { -5, 0, 4, 0 }, {9, 7, 8, -7 } });
 
-            var test = new int[4, 4] { { 2, 4, 1, 1 }, { 0, 2, 0, 0 }, { 2, 1, 1, 3 }, {4, 0, 2, 3 } };
+            var test = new Matrix(new int[4, 4] { { 2, 4, 1, 1 }, { 0, 2, 0, 0 }, { 2, 1, 1, 3 }, {4, 0, 2, 3 } });
 
-            var array4 = new int[3, 3] { { 5, 7, 1 }, { -4, 1, 0 }, { 2, 0, 3 } };
+            var array4 = new Matrix(new int[3, 3] { { 5, 7, 1 }, { -4, 1, 0 }, { 2, 0, 3 } });
 
 
 
@@ -30,30 +30,28 @@ namespace Elements_of_higher_mathematics
 
             Console.WriteLine($" Определитель: {squareMatrix.FindDeterminant(array, 1, enumMatrix.column)}");
 
-            Matrix matrix = new Matrix();
-
             #endregion
 
 
-            var array5 = new int[2, 3] { { 2, 3, -1 }, { 6, 1, -2 } };
+            var array5 = new Matrix(new int[2, 3] { { 2, 3, -1 }, { 6, 1, -2 } });
 
-            var array6 = new int[3, 2] { { 4, -5 }, { -3, 0 }, { 1, 2 } };
+            var array6 = new Matrix(new int[3, 2] { { 4, -5 }, { -3, 0 }, { 1, 2 } });
 
-            var array7 = new int[3, 3] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } };
+            var array7 = new Matrix(new int[3, 3] { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } });
 
-            var array8 = new int[3, 3] { { 1, 1, 1 }, { 2, 2, 2 }, { 3, 3, 3 } };
+            var array8 = new Matrix(new int[3, 3] { { 1, 1, 1 }, { 2, 2, 2 }, { 3, 3, 3 } });
 
-            // var result = matrix.MatrixMultiplication(array, array4);
+            Matrix matrixA = array;
+            Matrix matrixB = array4;
 
-            //var result = matrix.MatrixAddition(array7, array8);
+            Matrix matrixC = matrixA * matrixB;
+            Matrix matrixD = matrixA - matrixB;
+            Matrix matrixF = matrixC + matrixD ;
 
-            var result = matrix.MatrixSubtraction(array7, array8);
-
-            foreach (var item in result)
+            foreach (var item in matrixF.MatrixValue)
             {
                 Console.WriteLine(item);
             }
-
         }
     }
 }

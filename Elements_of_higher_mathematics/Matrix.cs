@@ -1,24 +1,61 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Elements_of_higher_mathematics
 {
     public class Matrix
     {
+        public int[,] MatrixValue { get; private set; }
+
+        public Matrix() { }
+
+        public Matrix(int[,] matrixValue)
+        {
+            MatrixValue = matrixValue;
+        }
+
+        /// <summary>
+        /// Метод сложения матриц.
+        /// </summary>
+        /// <param name="matrixA"> Матрица А. </param>
+        /// <param name="matrixB"> Матрица В. </param>
+        /// <returns> Результат сложения матриц. </returns>
+        public static Matrix MatrixAddition(Matrix matrixA, Matrix matrixB)
+        {
+            Matrix matrixResult = AdditionAndSubtraction(matrixA, matrixB, enumAdditionAndSubtraction.Addition);
+
+            return matrixResult;
+        }
+
+        /// <summary>
+        /// Метод вычитания матриц.
+        /// </summary>
+        /// <param name="matrixA"> Матрица А. </param>
+        /// <param name="matrixB"> Матрица В. </param>
+        /// <returns> Результат вычитания матриц. </returns>
+        public static Matrix MatrixSubtraction(Matrix matrixA, Matrix matrixB)
+        {
+            Matrix matrixResult = AdditionAndSubtraction(matrixA, matrixB, enumAdditionAndSubtraction.Subtraction);
+
+            return matrixResult;
+        }
+
         /// <summary>
         /// Метод перемножения матриц.
         /// </summary>
         /// <param name="matrixA"> Матрица А. </param>
         /// <param name="matrixB"> Матрица В. </param>
         /// <returns> результат перемножения матриц. </returns>
-        public int[,] MatrixMultiplication(int[,] matrixA, int[,] matrixB)
+        public static Matrix MatrixMultiplication(Matrix matrixA, Matrix matrixB)
         {
-            var matrixAColumnLength = matrixA.GetLength(0); // длина колонки матрицы А.
-            var matrixARowLength = matrixA.GetLength(1); // длина строки матрицы А.
+            var matrixAColumnLength = matrixA.MatrixValue.GetLength(0); // длина колонки матрицы А.
+            var matrixARowLength = matrixA.MatrixValue.GetLength(1); // длина строки матрицы А.
 
-            var matrixBColumnLength = matrixB.GetLength(0); // длина колонки матрицы В. 
-            var matrixBRowLength = matrixB.GetLength(1); // длина строки матрицы В.
+            var matrixBColumnLength = matrixB.MatrixValue.GetLength(0); // длина колонки матрицы В. 
+            var matrixBRowLength = matrixB.MatrixValue.GetLength(1); // длина строки матрицы В.
 
-            int[,] newMatrix = new int[matrixAColumnLength, matrixBRowLength]; // новая матрица.
+            Matrix newMatrix = new Matrix(new int[matrixAColumnLength, matrixBRowLength]); // новая матрица.
 
             if (matrixARowLength == matrixBColumnLength)
             {
@@ -30,9 +67,9 @@ namespace Elements_of_higher_mathematics
                         sum = 0;
                         for (int k = 0; k < matrixARowLength; k++)
                         {
-                            sum = sum + (matrixA[i, k] * matrixB[k, j]);
+                            sum = sum + (matrixA.MatrixValue[i, k] * matrixB.MatrixValue[k, j]);
                         }
-                        newMatrix[i, j] = sum;
+                        newMatrix.MatrixValue[i, j] = sum;
                     }
                 }
             }
@@ -50,46 +87,20 @@ namespace Elements_of_higher_mathematics
         /// <param name="number"> Число. </param>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Матрица умноженная на число. </returns>
-        public int[,] MatrixMultiplication(int number, int[,] matrix)
+        public static Matrix MatrixMultiplication(int number, Matrix matrix)
         {
-            var matrixColumnLength = matrix.GetLength(0); // длина колонки матрицы.
-            var matrixRowLength = matrix.GetLength(1); // длина строки матрицы.
+            var matrixColumnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
+            var matrixRowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
 
-            int[,] matrixResult = new int[matrixColumnLength, matrixRowLength]; // результат перемножения.
+            Matrix matrixResult = new Matrix(new int[matrixColumnLength, matrixRowLength]); // результат перемножения.
 
             for (int i = 0; i < matrixColumnLength; i++)
             {
                 for (int j = 0; j < matrixRowLength; j++)
                 {
-                    matrixResult[i, j] = number * matrix[i, j];
+                    matrixResult.MatrixValue[i, j] = number * matrix.MatrixValue[i, j];
                 }
             }
-
-            return matrixResult;
-        }
-
-        /// <summary>
-        /// Метод сложения матриц.
-        /// </summary>
-        /// <param name="matrixA"> Матрица А. </param>
-        /// <param name="matrixB"> Матрица В. </param>
-        /// <returns> Результат сложения матриц. </returns>
-        public int[,] MatrixAddition(int[,] matrixA, int[,] matrixB)
-        {
-            int[,] matrixResult = AdditionAndSubtraction(matrixA, matrixB, enumAdditionAndSubtraction.Addition);
-
-            return matrixResult;
-        }
-
-        /// <summary>
-        /// Метод вычитания матриц.
-        /// </summary>
-        /// <param name="matrixA"> Матрица А. </param>
-        /// <param name="matrixB"> Матрица В. </param>
-        /// <returns> Результат вычитания матриц. </returns>
-        public int[,] MatrixSubtraction(int[,] matrixA, int[,] matrixB)
-        {
-            int[,] matrixResult = AdditionAndSubtraction(matrixA, matrixB, enumAdditionAndSubtraction.Subtraction);
 
             return matrixResult;
         }
@@ -101,15 +112,15 @@ namespace Elements_of_higher_mathematics
         /// <param name="matrixB"> Матрица В. </param>
         /// <param name="additionOrSubtraction"> Выбор какое действие должно происходить сложение или вычитание. </param>
         /// <returns> Результат сложения или вычитания матриц. </returns>
-        private int[,] AdditionAndSubtraction(int[,] matrixA, int[,] matrixB, enumAdditionAndSubtraction additionOrSubtraction)
+        private static Matrix AdditionAndSubtraction(Matrix matrixA, Matrix matrixB, enumAdditionAndSubtraction additionOrSubtraction)
         {
-            var matrixAColumnLength = matrixA.GetLength(0); // длина колонки матрицы А.
-            var matrixARowLength = matrixA.GetLength(1); // длина строки матрицы А.
+            var matrixAColumnLength = matrixA.MatrixValue.GetLength(0); // длина колонки матрицы А.
+            var matrixARowLength = matrixA.MatrixValue.GetLength(1); // длина строки матрицы А.
 
-            var matrixBColumnLength = matrixB.GetLength(0); // длина колонки матрицы В. 
-            var matrixBRowLength = matrixB.GetLength(1); // длина строки матрицы В.
+            var matrixBColumnLength = matrixB.MatrixValue.GetLength(0); // длина колонки матрицы В. 
+            var matrixBRowLength = matrixB.MatrixValue.GetLength(1); // длина строки матрицы В.
 
-            int[,] matrixResult = new int[matrixAColumnLength, matrixBRowLength]; // результат сложения.
+            Matrix matrixResult = new Matrix(new int[matrixAColumnLength, matrixBRowLength]); // результат сложения.
 
             if (matrixAColumnLength == matrixBColumnLength && matrixARowLength == matrixBRowLength)
             {
@@ -119,21 +130,42 @@ namespace Elements_of_higher_mathematics
                     {
                         if (additionOrSubtraction == enumAdditionAndSubtraction.Addition)
                         {
-                             matrixResult[i, j] = matrixA[i, j] + matrixB[i, j];
+                            matrixResult.MatrixValue[i, j] = matrixA.MatrixValue[i, j] + matrixB.MatrixValue[i, j];
                         }
                         else if (additionOrSubtraction == enumAdditionAndSubtraction.Subtraction)
                         {
-                            matrixResult[i, j] = matrixA[i, j] - matrixB[i, j];
+                            matrixResult.MatrixValue[i, j] = matrixA.MatrixValue[i, j] - matrixB.MatrixValue[i, j];
                         }
                     }
                 }
             }
             else
             {
-                Console.WriteLine("Нельзя сложить эти матрицы.");
+                Console.WriteLine("Эти матрицы не равны.");
             }
 
             return matrixResult;
+        }
+
+
+        public static Matrix operator +(Matrix matrixA, Matrix matrixB)
+        {
+            return MatrixAddition(matrixA, matrixB);
+        }
+
+        public static Matrix operator -(Matrix matrixA, Matrix matrixB)
+        {
+            return MatrixSubtraction(matrixA, matrixB);
+        }
+
+        public static Matrix operator *(Matrix matrixA, Matrix matrixB)
+        {
+            return MatrixMultiplication(matrixA, matrixB);
+        }
+
+        public static Matrix operator *(int Number, Matrix matrixB)
+        {
+            return MatrixMultiplication(Number, matrixB);
         }
 
     }
