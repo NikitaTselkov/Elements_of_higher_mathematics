@@ -41,17 +41,32 @@ namespace Elements_of_higher_mathematics
 
             var array8 = new Matrix(new int[3, 3] { { 1, 1, 1 }, { 2, 2, 2 }, { 3, 3, 3 } });
 
+            Matrix matrix = new Matrix();
+
             Matrix matrixA = array;
             Matrix matrixB = array4;
 
             Matrix matrixC = matrixA * matrixB;
             Matrix matrixD = matrixA - matrixB;
-            Matrix matrixF = matrixC + matrixD ;
+            Matrix matrixF = matrixC + matrixD;
 
-            foreach (var item in matrixF.MatrixValue)
+            Matrix matrixG = array8.MatrixTransposition();
+
+            foreach (var item in matrixG.MatrixValue)
             {
                 Console.WriteLine(item);
             }
+
+            Console.WriteLine(matrixG.IsMatrixTransposition);
+
+            matrixG = matrixG.MatrixTransposition();
+
+            foreach (var item in matrixG.MatrixValue)
+            {
+                Console.WriteLine(item);
+            }
+
+            Console.WriteLine(matrixG.IsMatrixTransposition);
         }
     }
 }

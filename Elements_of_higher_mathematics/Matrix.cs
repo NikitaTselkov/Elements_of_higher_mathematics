@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Elements_of_higher_mathematics
 {
     public class Matrix
     {
+        /// <summary>
+        /// Значения матрицы.
+        /// </summary>
         public int[,] MatrixValue { get; private set; }
+
+        /// <summary>
+        /// Была ли матрица транспонированна.
+        /// </summary>
+        public bool IsMatrixTransposition { get; private set; }
 
         public Matrix() { }
 
@@ -99,6 +108,30 @@ namespace Elements_of_higher_mathematics
                 for (int j = 0; j < matrixRowLength; j++)
                 {
                     matrixResult.MatrixValue[i, j] = number * matrix.MatrixValue[i, j];
+                }
+            }
+
+            return matrixResult;
+        }
+
+        /// <summary>
+        /// Метод транспонирующий матрицу.
+        /// </summary>
+        /// <returns> Измененая матрица. </returns>
+        public Matrix MatrixTransposition()
+        {
+            var matrixColumnLength = MatrixValue.GetLength(0); // длина колонки матрицы.
+            var matrixRowLength = MatrixValue.GetLength(1); // длина строки матрицы.
+
+            Matrix matrixResult = new Matrix(new int[matrixColumnLength, matrixRowLength]); // результат транспонирования.
+
+            matrixResult.IsMatrixTransposition = !IsMatrixTransposition;
+
+            for (int i = 0; i < matrixColumnLength; i++)
+            {
+                for (int j = 0; j < matrixRowLength; j++)
+                {
+                    matrixResult.MatrixValue[i, j] = MatrixValue[j, i];
                 }
             }
 
