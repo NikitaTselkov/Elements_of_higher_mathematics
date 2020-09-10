@@ -10,7 +10,7 @@ namespace Elements_of_higher_mathematics
         /// </summary>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Определитель квадратной матрицы второго порядка. </returns>
-        public int FindDeterminantOfTheSecondOrder(Matrix matrix)
+        public double FindDeterminantOfTheSecondOrder(Matrix matrix)
         {          
             var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки.
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки.
@@ -33,7 +33,7 @@ namespace Elements_of_higher_mathematics
         /// </summary>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Определитель квадратной матрицы третьего порядка. </returns>
-        public int FindDeterminantOfTheThirdOrder(Matrix _matrix)
+        public double FindDeterminantOfTheThirdOrder(Matrix _matrix)
         {
             #region Kоординаты вершин треугольников
 
@@ -65,14 +65,14 @@ namespace Elements_of_higher_mathematics
         /// <param name="num1"> Колонка. </param>
         /// <param name="num2"> Строка. </param>
         /// <returns> Минор квадратной матрицы. </returns>
-        public int FindMinor(Matrix matrix, int num1, int num2)
+        public double FindMinor(Matrix matrix, int num1, int num2)
         {
             var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки.
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки.
 
             var newMatrix = GetChangedMinorMatrix(matrix, columnLength, rowLength, num1, num2); // Изменение матрицы.
 
-            int minor;
+            double minor;
 
             if (rowLength == 4 && columnLength == 4)
             {
@@ -93,9 +93,11 @@ namespace Elements_of_higher_mathematics
         /// <param name="num1"> Колонка. </param>
         /// <param name="num2"> Строка. </param>
         /// <returns> Алгебраическое дополнение квадратной матрицы. </returns>
-        public int FindCofactor(Matrix matrix, int num1, int num2)
+        public double FindCofactor(Matrix matrix, int num1, int num2)
         {
             var cofactor = (int)Math.Pow(-1, num1 + num2) * FindMinor(matrix, num1, num2);
+
+            Console.WriteLine($"cofactor: {cofactor}");
 
             return cofactor;
         }
@@ -107,9 +109,9 @@ namespace Elements_of_higher_mathematics
         /// <param name="num"> Строка или столбик. </param>
         /// <param name="enumMatrix"> переключатель между строкой или столбиком. </param>
         /// <returns> Определитель. </returns>
-        public int FindDeterminant(Matrix matrix, int num, enumMatrix enumMatrix = enumMatrix.row)
+        public double FindDeterminant(Matrix matrix, int num, enumMatrix enumMatrix = enumMatrix.row)
         {
-            var determinant = 0;
+            var determinant = 0.0;
 
             if (enumMatrix == enumMatrix.row)
             {
@@ -134,15 +136,71 @@ namespace Elements_of_higher_mathematics
         }
 
         /// <summary>
+        /// Метод нахождения союзной матрицы.
+        /// </summary>
+        /// <param name="matrix"> Матрица. </param>
+        /// <returns> Союзная матрица. </returns>
+        public Matrix FindUnionMatrix(Matrix matrix)
+        {
+            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
+            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
+
+            var unionMatrix = new Matrix(new double[columnLength, rowLength]); // Союзная матрица.
+
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    unionMatrix.MatrixValue[i, j] = FindCofactor(matrix, i + 1, j + 1);
+                }
+            }
+
+            unionMatrix = unionMatrix.MatrixTransposition(); // Транспонирование матрицы.
+
+            unionMatrix.IsMatrixUnion = !unionMatrix.IsMatrixUnion;
+
+            return unionMatrix;
+        }
+
+        /// <summary>
+        ///  Метод нахождения обратной матрицы.
+        /// </summary>
+        /// <param name="matrix"> Матрица. </param>
+        /// <returns> Обратная матрица. </returns>
+        public Matrix FindInverseMatrix(Matrix matrix)
+        {
+            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
+            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
+
+            var inverseMatrix = new Matrix(new double[columnLength, rowLength]); // Обратная матрица.
+
+            var det = FindDeterminant(matrix, 1);
+
+            if (det != 0)
+            {
+                inverseMatrix = (1.0 / det) * FindUnionMatrix(matrix);
+
+                inverseMatrix.IsMatrixInverse = !inverseMatrix.IsMatrixInverse;
+            }
+            else
+            {
+                Console.WriteLine("Обратной матрицы не существует");
+            }
+
+            return inverseMatrix;
+        }
+
+
+        /// <summary>
         /// Получает главную диагональ.
         /// </summary>
         /// <param name="columnLength"> Длина колонки матрицы. </param>
         /// <param name="rowLength"> Длина строки матрицы. </param>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Главная диагональ. </returns>
-        private int FindMainDiagonal(int columnLength, int rowLength, Matrix matrix)
+        private double FindMainDiagonal(int columnLength, int rowLength, Matrix matrix)
         {
-            var result = 1;
+            double result = 1;
 
             for (int i = 0; i < columnLength; i++)
             {
@@ -165,9 +223,9 @@ namespace Elements_of_higher_mathematics
         /// <param name="rowLength"> Длина строки матрицы. </param>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Побочная диагональ. </returns>
-        private int FindSideDiagonal(int columnLength, int rowLength, Matrix matrix)
+        private double FindSideDiagonal(int columnLength, int rowLength, Matrix matrix)
         {
-            var result = 1;
+            var result = 1.0;
             var number = 0;
 
             for (int i = columnLength - 1; i >= 0; i--)
@@ -232,9 +290,9 @@ namespace Elements_of_higher_mathematics
             }
             #endregion
 
-            var newMatrix = new Matrix(new int[rowLength - 1, columnLength - 1]);
+            var newMatrix = new Matrix(new double[rowLength - 1, columnLength - 1]);
 
-            var list = new List<int>(); //Вспомогательный список.
+            var list = new List<double>(); //Вспомогательный список.
             var num = 0; //Вспомогательная переменная для заполнения массива.
 
             for (int i = 0; i < columnLength; i++)

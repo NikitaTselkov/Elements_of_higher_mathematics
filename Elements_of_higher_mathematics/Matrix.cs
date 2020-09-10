@@ -10,16 +10,26 @@ namespace Elements_of_higher_mathematics
         /// <summary>
         /// Значения матрицы.
         /// </summary>
-        public int[,] MatrixValue { get; private set; }
+        public double[,] MatrixValue { get; private set; }
 
         /// <summary>
         /// Была ли матрица транспонированна.
         /// </summary>
         public bool IsMatrixTransposition { get; private set; }
 
+        /// <summary>
+        /// Если это союзная матрица.
+        /// </summary>
+        public bool IsMatrixUnion { get; set; }
+
+        /// <summary>
+        /// Если это обратная матрица.
+        /// </summary>
+        public bool IsMatrixInverse { get; set; }
+
         public Matrix() { }
 
-        public Matrix(int[,] matrixValue)
+        public Matrix(double[,] matrixValue)
         {
             MatrixValue = matrixValue;
         }
@@ -64,11 +74,11 @@ namespace Elements_of_higher_mathematics
             var matrixBColumnLength = matrixB.MatrixValue.GetLength(0); // длина колонки матрицы В. 
             var matrixBRowLength = matrixB.MatrixValue.GetLength(1); // длина строки матрицы В.
 
-            Matrix newMatrix = new Matrix(new int[matrixAColumnLength, matrixBRowLength]); // новая матрица.
+            Matrix newMatrix = new Matrix(new double[matrixAColumnLength, matrixBRowLength]); // новая матрица.
 
             if (matrixARowLength == matrixBColumnLength)
             {
-                int sum;
+                double sum;
                 for (int i = 0; i < matrixAColumnLength; i++)
                 {
                     for (int j = 0; j < matrixBRowLength; j++)
@@ -96,12 +106,12 @@ namespace Elements_of_higher_mathematics
         /// <param name="number"> Число. </param>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Матрица умноженная на число. </returns>
-        public static Matrix MatrixMultiplication(int number, Matrix matrix)
+        public static Matrix MatrixMultiplication(double number, Matrix matrix)
         {
             var matrixColumnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
             var matrixRowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
 
-            Matrix matrixResult = new Matrix(new int[matrixColumnLength, matrixRowLength]); // результат перемножения.
+            Matrix matrixResult = new Matrix(new double[matrixColumnLength, matrixRowLength]); // результат перемножения.
 
             for (int i = 0; i < matrixColumnLength; i++)
             {
@@ -123,7 +133,7 @@ namespace Elements_of_higher_mathematics
             var matrixColumnLength = MatrixValue.GetLength(0); // длина колонки матрицы.
             var matrixRowLength = MatrixValue.GetLength(1); // длина строки матрицы.
 
-            Matrix matrixResult = new Matrix(new int[matrixColumnLength, matrixRowLength]); // результат транспонирования.
+            Matrix matrixResult = new Matrix(new double[matrixColumnLength, matrixRowLength]); // результат транспонирования.
 
             matrixResult.IsMatrixTransposition = !IsMatrixTransposition;
 
@@ -153,7 +163,7 @@ namespace Elements_of_higher_mathematics
             var matrixBColumnLength = matrixB.MatrixValue.GetLength(0); // длина колонки матрицы В. 
             var matrixBRowLength = matrixB.MatrixValue.GetLength(1); // длина строки матрицы В.
 
-            Matrix matrixResult = new Matrix(new int[matrixAColumnLength, matrixBRowLength]); // результат сложения.
+            Matrix matrixResult = new Matrix(new double[matrixAColumnLength, matrixBRowLength]); // результат сложения.
 
             if (matrixAColumnLength == matrixBColumnLength && matrixARowLength == matrixBRowLength)
             {
@@ -196,7 +206,7 @@ namespace Elements_of_higher_mathematics
             return MatrixMultiplication(matrixA, matrixB);
         }
 
-        public static Matrix operator *(int Number, Matrix matrixB)
+        public static Matrix operator *(double Number, Matrix matrixB)
         {
             return MatrixMultiplication(Number, matrixB);
         }
