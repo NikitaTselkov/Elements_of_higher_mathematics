@@ -13,9 +13,14 @@ namespace Elements_of_higher_mathematics
         public double[,] MatrixValue { get; private set; }
 
         /// <summary>
+        /// Общий множитель.
+        /// </summary>
+        public double CommonMultiplier { get; set; } = 1;
+
+        /// <summary>
         /// Была ли матрица транспонированна.
         /// </summary>
-        public bool IsMatrixTransposition { get; private set; }
+        public bool IsMatrixTransposition { get; set; }
 
         /// <summary>
         /// Если это союзная матрица.
@@ -111,7 +116,7 @@ namespace Elements_of_higher_mathematics
             var matrixColumnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
             var matrixRowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
 
-            Matrix matrixResult = new Matrix(new double[matrixColumnLength, matrixRowLength]); // результат перемножения.
+            Matrix matrixResult = matrix; // результат перемножения.
 
             for (int i = 0; i < matrixColumnLength; i++)
             {
@@ -144,6 +149,10 @@ namespace Elements_of_higher_mathematics
                     matrixResult.MatrixValue[i, j] = MatrixValue[j, i];
                 }
             }
+
+            matrixResult.IsMatrixInverse = IsMatrixInverse;
+            matrixResult.IsMatrixUnion = IsMatrixUnion;
+            matrixResult.CommonMultiplier = CommonMultiplier;
 
             return matrixResult;
         }
