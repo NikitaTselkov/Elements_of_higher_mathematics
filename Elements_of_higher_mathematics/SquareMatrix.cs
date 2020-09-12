@@ -15,6 +15,12 @@ namespace Elements_of_higher_mathematics
             var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки.
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки.
 
+
+            Console.WriteLine();
+            Console.WriteLine("Определитель квадратной матрицы второго порядка");
+            Console.WriteLine();
+
+
             var mainDiagonal = FindMainDiagonal(columnLength, rowLength, matrix); // главная диагональ.
             var sideDiagonal = FindSideDiagonal(columnLength, rowLength, matrix); // побочная диагональ.
 
@@ -24,6 +30,12 @@ namespace Elements_of_higher_mathematics
             {
                 determinantOfTheSecondOrder = mainDiagonal;
             }
+
+            Console.WriteLine();
+            Console.WriteLine($"{mainDiagonal} - {sideDiagonal} = {determinantOfTheSecondOrder}");
+
+            Console.WriteLine();
+
 
             return determinantOfTheSecondOrder;
         }
@@ -54,6 +66,20 @@ namespace Elements_of_higher_mathematics
             var determinantOfTheThirdOrder = mainDiagonal + firstPlusTriangle + secondPlusTriangle - sideDiagonal - firstMinusTriangle - secondMinusTriangle;
 
             #endregion
+
+
+            Console.WriteLine();
+            Console.WriteLine("Определитель квадратной матрицы третьего порядка");
+            Console.WriteLine();
+            Console.WriteLine($"{matrix[0, 0]} * {matrix[1, 1]} * {matrix[2, 2]} + " +
+                $"{matrix[0, 1]} * {matrix[1, 2]} * {matrix[2, 0]} + {matrix[0, 2]}" +
+                $" * {matrix[1, 0]} * {matrix[2, 1]} - {matrix[0, 2]} * {matrix[1, 1]}" +
+                $" * {matrix[2, 0]} - {matrix[0, 1]} * {matrix[1, 0]} * {matrix[2, 2]}" +
+                $" - {matrix[0, 0]} * {matrix[1, 2]} * {matrix[2, 1]} = {mainDiagonal}" +
+                $" + {firstPlusTriangle} + {secondPlusTriangle} - {sideDiagonal} " +
+                $"- {firstMinusTriangle} - {secondMinusTriangle} = {determinantOfTheThirdOrder}");
+
+            Console.WriteLine();
 
             return determinantOfTheThirdOrder;
         }
@@ -95,9 +121,16 @@ namespace Elements_of_higher_mathematics
         /// <returns> Алгебраическое дополнение квадратной матрицы. </returns>
         public double FindCofactor(Matrix matrix, int num1, int num2)
         {
-            var cofactor = (int)Math.Pow(-1, num1 + num2) * FindMinor(matrix, num1, num2);
+            Console.WriteLine();
+            Console.WriteLine($"Алгебраическое дополнение {num1}, {num2}");
+            Console.WriteLine();
 
-            Console.WriteLine($"cofactor: {cofactor}");
+            var minor = FindMinor(matrix, num1, num2);
+            var cofactor = (int)Math.Pow(-1, num1 + num2) * minor;
+
+
+            Console.WriteLine($"-1^{num1} + {num2} * {minor} = {cofactor}");
+            Console.WriteLine();
 
             return cofactor;
         }
@@ -111,7 +144,14 @@ namespace Elements_of_higher_mathematics
         /// <returns> Определитель. </returns>
         public double FindDecompositionOfMatrix(Matrix matrix, int num, enumMatrix enumMatrix = enumMatrix.row)
         {
+            Console.WriteLine();
+
+            Console.WriteLine($"Разложение матрицы по {enumMatrix} {num}");
+            var array = new List<double>();
+
+
             var determinant = 0.0;
+            var cofactor = 0.0;
 
             if (enumMatrix == enumMatrix.row)
             {
@@ -119,9 +159,24 @@ namespace Elements_of_higher_mathematics
 
                 for (int i = 0; i < rowLength; i++)
                 {
-                    determinant += matrix.MatrixValue[num - 1, i] * FindCofactor(matrix, num, i + 1);
+                    cofactor = FindCofactor(matrix, num, i + 1);
+                    determinant += matrix.MatrixValue[num - 1, i] * cofactor;
+                }
 
-                    Console.Write($"{matrix.MatrixValue[num - 1, i]} * {FindCofactor(matrix, num, i + 1)} +");
+                Console.Write(matrix.CommonMultiplier);
+
+                Console.WriteLine();
+
+                for (int i = 0; i < rowLength; i++)
+                {
+                    if (i < rowLength - 1)
+                    {
+                        Console.Write($"{matrix.MatrixValue[num - 1, i]} * {cofactor} + ");
+                    }
+                    else
+                    {
+                        Console.Write($"{matrix.MatrixValue[num - 1, i]} * {cofactor} = {determinant * matrix.CommonMultiplier}");
+                    }
                 }
             }
             else if (enumMatrix == enumMatrix.column)
@@ -130,9 +185,28 @@ namespace Elements_of_higher_mathematics
 
                 for (int i = 0; i < columnLength; i++)
                 {
-                    determinant += matrix.MatrixValue[i, num - 1] * FindCofactor(matrix, i + 1, num);
+                    cofactor = FindCofactor(matrix, i + 1, num);
+                    determinant += matrix.MatrixValue[i, num - 1] * cofactor;
 
-                    Console.Write($"{matrix.MatrixValue[i, num - 1]} * {FindCofactor(matrix, i + 1, num)} +");
+                    array.Add(cofactor);
+                }
+
+                Console.Write(matrix.CommonMultiplier);
+
+                Console.WriteLine();
+
+               
+
+                for (int i = 0; i < columnLength; i++)
+                {
+                    if (i < columnLength - 1)
+                    {
+                        Console.Write($"{matrix.MatrixValue[i, num - 1]} * {array[i]} + ");
+                    }
+                    else
+                    {
+                        Console.Write($"{matrix.MatrixValue[i, num - 1]} * {array[i]} = {determinant * matrix.CommonMultiplier}");
+                    }
                 }
             }
 
@@ -265,15 +339,38 @@ namespace Elements_of_higher_mathematics
 
             Console.WriteLine();
 
-            Console.WriteLine("Меняем колонки местами");
-
-            Console.WriteLine($"Множитель: {newMatrix.CommonMultiplier}");
+            Console.WriteLine($"Меняем {enumMatrix} {num1} и {num2} местами");
 
             Console.WriteLine();
 
-            foreach (var item in newMatrix.MatrixValue)
+            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
+
+            Console.WriteLine();
+
+            for (int i = 0; i < columnLength; i++)
             {
-                Console.Write(item);
+                for (int j = 0; j < rowLength; j++)
+                {
+                    Console.Write($" {matrix.MatrixValue[i, j]} ");
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
+
+            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
+
+            Console.WriteLine();
+
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    Console.Write($" {newMatrix.MatrixValue[i, j]} ");
+                }
+
+                Console.WriteLine();
             }
 
             Console.WriteLine();
@@ -296,7 +393,13 @@ namespace Elements_of_higher_mathematics
             var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
 
-            var newMatrix = new Matrix(new double[columnLength, rowLength]); // Новая матрица.
+            var newMatrix = new Matrix(matrix); // Новая матрица.
+
+            Console.WriteLine();
+            Console.WriteLine("Шестое свойство определителя");
+            Console.WriteLine();
+            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
+            Console.WriteLine();
 
             if (num1 != num2)
             {
@@ -310,15 +413,16 @@ namespace Elements_of_higher_mathematics
                             {
                                 newMatrix.MatrixValue[i, j] = matrix.MatrixValue[num1 - 1, j] * multiplier + matrix.MatrixValue[num2 - 1, j];
 
-                                Console.WriteLine($"{matrix.MatrixValue[num1 - 1, j]} * {multiplier} + {matrix.MatrixValue[num2 - 1, j]}");
+                                Console.Write($"({matrix.MatrixValue[num1 - 1, j]} * {multiplier} + {matrix.MatrixValue[num2 - 1, j]})");
                             }
                             else
                             {
                                 newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, j];
 
-                                Console.WriteLine(matrix.MatrixValue[i, j]);
+                                Console.Write($"{newMatrix.MatrixValue[i, j]} ");
                             }
                         }
+                        Console.WriteLine();
                     }
                 }
                 else if (enumMatrix == enumMatrix.column)
@@ -330,30 +434,33 @@ namespace Elements_of_higher_mathematics
                             if (num2 - 1 == j)
                             {
                                 newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, num1 - 1] * multiplier + matrix.MatrixValue[i, num2 - 1];
+
+                                Console.Write($"({matrix.MatrixValue[i, num1 - 1]} * {multiplier} + {matrix.MatrixValue[i, num2 - 1]})");
                             }
                             else
                             {
                                 newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, j];
+
+                                Console.Write($"{newMatrix.MatrixValue[i, j]} ");
                             }
                         }
+                        Console.WriteLine();
                     }
                 }
             }
 
             newMatrix = LoadMatrixData(matrix, newMatrix);
 
-
-            Console.WriteLine("Шестое свойство определителя");
-
             Console.WriteLine();
-
-            Console.WriteLine($"Множитель: {newMatrix.CommonMultiplier}");
-
+            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
             Console.WriteLine();
-
-            foreach (var item in newMatrix.MatrixValue)
+            for (int i = 0; i < columnLength; i++)
             {
-                Console.Write(item);
+                for (int j = 0; j < rowLength; j++)
+                {
+                    Console.Write($"{newMatrix.MatrixValue[i, j]} ");
+                }
+                Console.WriteLine();
             }
 
             Console.WriteLine();
@@ -375,7 +482,6 @@ namespace Elements_of_higher_mathematics
             var newMatrix = new Matrix(new double[columnLength, rowLength]);
 
             newMatrix = new Matrix(matrix);
-
 
             for (int i = 0; i < columnLength; i++)
             {
@@ -578,21 +684,33 @@ namespace Elements_of_higher_mathematics
             newMatrix.CommonMultiplier = commonMultiplier * matrix.CommonMultiplier;
 
 
-            Console.WriteLine($"Общий множитель: {newMatrix.CommonMultiplier}");
+            Console.WriteLine($"Общий множитель");
 
             Console.WriteLine();
 
-            Console.WriteLine($"Множитель: {newMatrix.CommonMultiplier}");
-
-            Console.WriteLine();
-
-            foreach (var item in newMatrix.MatrixValue)
+            for (int i = 0; i < columnLength; i++)
             {
-                Console.Write(item);
+                for (int j = 0; j < rowLength; j++)
+                {
+                    Console.Write($" {matrix.MatrixValue[i, j]}");
+                }
+                Console.WriteLine();
             }
+            Console.WriteLine();
+
+            Console.Write($"Множитель: {newMatrix.CommonMultiplier}");
 
             Console.WriteLine();
 
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    Console.Write($" {newMatrix.MatrixValue[i, j]}");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
 
             return newMatrix;
         }
@@ -636,6 +754,8 @@ namespace Elements_of_higher_mathematics
                 }
             }
 
+            Console.WriteLine($"{matrix.MatrixValue[0, 0]} * {matrix.MatrixValue[1, 1]} = {result}");
+
             return result;
         }
 
@@ -672,6 +792,8 @@ namespace Elements_of_higher_mathematics
                     }
                 }
             }
+
+            Console.WriteLine($"{matrix.MatrixValue[0, 1]} * {matrix.MatrixValue[1, 0]} = {result}");
 
             return result;
         }
@@ -738,6 +860,40 @@ namespace Elements_of_higher_mathematics
             }
 
             newMatrix = LoadMatrixData(matrix, newMatrix);
+
+
+            Console.WriteLine();
+
+            Console.WriteLine($"Минор {column}, {row}");
+
+            Console.WriteLine();
+            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
+            Console.WriteLine();
+
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                   Console.Write($" {matrix.MatrixValue[i, j]} ");
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
+            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
+            Console.WriteLine();
+
+            for (int i = 0; i < columnLength - 1; i++)
+            {
+                for (int j = 0; j < rowLength - 1; j++)
+                {
+                  Console.Write($" {newMatrix.MatrixValue[i, j]} ");
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
 
             return newMatrix;
         }
