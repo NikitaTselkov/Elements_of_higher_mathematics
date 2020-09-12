@@ -383,19 +383,27 @@ namespace Elements_of_higher_mathematics
                 var isThereCommonMultiplier = true;
                 for (int j = 0; j < rowLength; j++)
                 {
-                    if (rowLength != j + 1)
+                    if (matrix.MatrixValue[i, j] != 1)
                     {
-                        if (commonMultiplier == 1.0)
+                        if (rowLength != j + 1)
                         {
-                            commonMultiplier = GCF(matrix.MatrixValue[i, j], matrix.MatrixValue[i, j + 1]);
-                        }
-                        else
-                        {
-                            if (commonMultiplier % GCF(matrix.MatrixValue[i, j], matrix.MatrixValue[i, j + 1]) != 0)
+                            if (commonMultiplier == 1.0)
                             {
-                                isThereCommonMultiplier = false;
+                                commonMultiplier = GCF(matrix.MatrixValue[i, j], matrix.MatrixValue[i, j + 1]);
+                            }
+                            else
+                            {
+                                if (commonMultiplier % GCF(matrix.MatrixValue[i, j], matrix.MatrixValue[i, j + 1]) != 0)
+                                {
+                                    isThereCommonMultiplier = false;
+                                }
                             }
                         }
+                    }
+                    else
+                    {
+                        commonMultiplier = 1.0;
+                        isThereCommonMultiplier = false;
                     }
                 }
                 if (isThereCommonMultiplier == true && commonMultiplier != -1)
@@ -420,9 +428,32 @@ namespace Elements_of_higher_mathematics
         public double FindDeterminant(Matrix matrix)
         {
             var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
+            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
             var determinant = 0.0;
 
             matrix = FindTheCommonMultiplier(matrix);
+
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    if (matrix.MatrixValue[i, j] == 1) 
+                    {
+                        if (i > 0)
+                        {
+                            matrix = SwapColumnsOrRows(matrix, 1, i + 1);
+                        }
+                        if (j > 0)
+                        {
+                            matrix = SwapColumnsOrRows(matrix, 1, j + 1, enumMatrix.column);
+                        }
+
+                        goto Break;
+                    }
+                }
+            }
+
+            Break:
 
             while (true)
             {
@@ -476,7 +507,7 @@ namespace Elements_of_higher_mathematics
                     {
                         var multiplier = matrix.MatrixValue[i, 0];
 
-                        if (multiplier > 0)
+                        if (multiplier != 0)
                         {
                             matrix = SixthPropertyOfTheDeterminant(matrix, multiplier * -1, 1, i + 1);
                         }

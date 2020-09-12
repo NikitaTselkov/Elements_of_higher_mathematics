@@ -23,7 +23,7 @@ namespace Elements_of_higher_mathematics
             var matrixD = new Matrix(new double[4, 4] { { 6, 8, 9, -12 }, { 4, 6, -6, -9 }, { -3, -4, 6, 8 }, { -2, -3, 4, 6 } });
 
 
-            Console.WriteLine(squareMatrix.FindDeterminant(matrixA));
+            Console.WriteLine(squareMatrix.FindDeterminant(matrixB));
 
         }
     }
