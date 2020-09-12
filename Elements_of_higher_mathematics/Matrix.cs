@@ -39,6 +39,15 @@ namespace Elements_of_higher_mathematics
             MatrixValue = matrixValue;
         }
 
+        public Matrix(Matrix matrix)
+        {
+            MatrixValue = matrix.MatrixValue;
+            CommonMultiplier = matrix.CommonMultiplier;
+            IsMatrixTransposition = matrix.IsMatrixTransposition;
+            IsMatrixUnion = matrix.IsMatrixUnion;
+            IsMatrixInverse = matrix.IsMatrixInverse;
+        }
+
         /// <summary>
         /// Метод сложения матриц.
         /// </summary>
