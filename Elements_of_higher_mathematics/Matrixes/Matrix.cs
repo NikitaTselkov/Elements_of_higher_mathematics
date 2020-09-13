@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Elements_of_higher_mathematics
+namespace Elements_of_higher_mathematics.Matrixes
 {
     public class Matrix
     {
@@ -99,8 +99,8 @@ namespace Elements_of_higher_mathematics
                     {
                         sum = 0;
                         for (int k = 0; k < matrixARowLength; k++)
-                        {
-                            sum = sum + (matrixA.MatrixValue[i, k] * matrixB.MatrixValue[k, j]);
+                        {                       
+                            sum = Math.Round(sum + (matrixA.MatrixValue[i, k] * matrixB.MatrixValue[k, j]), 2);
                         }
                         newMatrix.MatrixValue[i, j] = sum;
                     }
@@ -131,7 +131,7 @@ namespace Elements_of_higher_mathematics
             {
                 for (int j = 0; j < matrixRowLength; j++)
                 {
-                    matrixResult.MatrixValue[i, j] = number * matrix.MatrixValue[i, j];
+                    matrixResult.MatrixValue[i, j] = Math.Round(number * matrix.MatrixValue[i, j], 3);
                 }
             }
 
@@ -144,6 +144,10 @@ namespace Elements_of_higher_mathematics
         /// <returns> Измененая матрица. </returns>
         public Matrix MatrixTransposition()
         {
+            Console.WriteLine();
+            Console.WriteLine("Трансаонирование матрицы.");
+            Console.WriteLine();
+
             var matrixColumnLength = MatrixValue.GetLength(0); // длина колонки матрицы.
             var matrixRowLength = MatrixValue.GetLength(1); // длина строки матрицы.
 
@@ -162,6 +166,29 @@ namespace Elements_of_higher_mathematics
             matrixResult.IsMatrixInverse = IsMatrixInverse;
             matrixResult.IsMatrixUnion = IsMatrixUnion;
             matrixResult.CommonMultiplier = CommonMultiplier;
+
+
+            Console.WriteLine();
+            for (int i = 0; i < matrixColumnLength; i++)
+            {
+                for (int j = 0; j < matrixRowLength; j++)
+                {
+                    Console.Write($" {MatrixValue[i, j]} ");
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
+            for (int i = 0; i < matrixColumnLength; i++)
+            {
+                for (int j = 0; j < matrixRowLength; j++)
+                {
+                    Console.Write($" {matrixResult.MatrixValue[i, j]} ");
+                }
+
+                Console.WriteLine();
+            }
 
             return matrixResult;
         }
@@ -191,11 +218,11 @@ namespace Elements_of_higher_mathematics
                     {
                         if (additionOrSubtraction == enumAdditionAndSubtraction.Addition)
                         {
-                            matrixResult.MatrixValue[i, j] = matrixA.MatrixValue[i, j] + matrixB.MatrixValue[i, j];
+                            matrixResult.MatrixValue[i, j] = Math.Round(matrixA.MatrixValue[i, j] + matrixB.MatrixValue[i, j], 3);
                         }
                         else if (additionOrSubtraction == enumAdditionAndSubtraction.Subtraction)
                         {
-                            matrixResult.MatrixValue[i, j] = matrixA.MatrixValue[i, j] - matrixB.MatrixValue[i, j];
+                            matrixResult.MatrixValue[i, j] = Math.Round(matrixA.MatrixValue[i, j] - matrixB.MatrixValue[i, j], 3);
                         }
                     }
                 }

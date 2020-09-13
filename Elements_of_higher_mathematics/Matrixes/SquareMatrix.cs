@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Elements_of_higher_mathematics
+namespace Elements_of_higher_mathematics.Matrixes
 {
     class SquareMatrix
     {
@@ -71,11 +71,11 @@ namespace Elements_of_higher_mathematics
             Console.WriteLine();
             Console.WriteLine("Определитель квадратной матрицы третьего порядка");
             Console.WriteLine();
-            Console.WriteLine($"{matrix[0, 0]} * {matrix[1, 1]} * {matrix[2, 2]} + " +
-                $"{matrix[0, 1]} * {matrix[1, 2]} * {matrix[2, 0]} + {matrix[0, 2]}" +
-                $" * {matrix[1, 0]} * {matrix[2, 1]} - {matrix[0, 2]} * {matrix[1, 1]}" +
-                $" * {matrix[2, 0]} - {matrix[0, 1]} * {matrix[1, 0]} * {matrix[2, 2]}" +
-                $" - {matrix[0, 0]} * {matrix[1, 2]} * {matrix[2, 1]} = {mainDiagonal}" +
+            Console.WriteLine($"({matrix[0, 0]} * {matrix[1, 1]} * {matrix[2, 2]}) + " +
+                $"({matrix[0, 1]} * {matrix[1, 2]} * {matrix[2, 0]}) + ({matrix[0, 2]}" +
+                $" * {matrix[1, 0]} * {matrix[2, 1]}) - ({matrix[0, 2]} * {matrix[1, 1]}" +
+                $" * {matrix[2, 0]}) - ({matrix[0, 1]} * {matrix[1, 0]} * {matrix[2, 2]})" +
+                $" - ({matrix[0, 0]} * {matrix[1, 2]} * {matrix[2, 1]}) = {mainDiagonal}" +
                 $" + {firstPlusTriangle} + {secondPlusTriangle} - {sideDiagonal} " +
                 $"- {firstMinusTriangle} - {secondMinusTriangle} = {determinantOfTheThirdOrder}");
 
@@ -161,6 +161,8 @@ namespace Elements_of_higher_mathematics
                 {
                     cofactor = FindCofactor(matrix, num, i + 1);
                     determinant += matrix.MatrixValue[num - 1, i] * cofactor;
+
+                    array.Add(cofactor);
                 }
 
                 Console.Write(matrix.CommonMultiplier);
@@ -171,11 +173,11 @@ namespace Elements_of_higher_mathematics
                 {
                     if (i < rowLength - 1)
                     {
-                        Console.Write($"{matrix.MatrixValue[num - 1, i]} * {cofactor} + ");
+                        Console.Write($"{matrix.MatrixValue[num - 1, i]} * {array[i]} + ");
                     }
                     else
                     {
-                        Console.Write($"{matrix.MatrixValue[num - 1, i]} * {cofactor} = {determinant * matrix.CommonMultiplier}");
+                        Console.Write($"{matrix.MatrixValue[i, num - 1]} * {array[i]} = {determinant * matrix.CommonMultiplier}");
                     }
                 }
             }
@@ -195,7 +197,7 @@ namespace Elements_of_higher_mathematics
 
                 Console.WriteLine();
 
-               
+
 
                 for (int i = 0; i < columnLength; i++)
                 {
@@ -220,6 +222,11 @@ namespace Elements_of_higher_mathematics
         /// <returns> Союзная матрица. </returns>
         public Matrix FindUnionMatrix(Matrix matrix)
         {
+
+            Console.WriteLine();
+            Console.WriteLine("Союзная матрица.");
+            Console.WriteLine();
+
             var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
 
@@ -239,6 +246,20 @@ namespace Elements_of_higher_mathematics
 
             unionMatrix.IsMatrixUnion = !matrix.IsMatrixUnion;
 
+            Console.WriteLine();
+            Console.WriteLine("Союзная матрица.");
+            Console.WriteLine();
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    Console.Write($" {unionMatrix.MatrixValue[i, j]} ");
+                }
+
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
             return unionMatrix;
         }
 
@@ -249,6 +270,11 @@ namespace Elements_of_higher_mathematics
         /// <returns> Обратная матрица. </returns>
         public Matrix FindInverseMatrix(Matrix matrix)
         {
+
+            Console.WriteLine();
+            Console.WriteLine("Обратная матрица.");
+            Console.WriteLine();
+
             var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
 
@@ -258,7 +284,27 @@ namespace Elements_of_higher_mathematics
 
             if (det != 0)
             {
-                inverseMatrix = (1.0 / det) * FindUnionMatrix(matrix);
+                var unionMatrix = FindUnionMatrix(matrix);
+
+
+                Console.WriteLine();
+                Console.WriteLine($"1 / {det} * {unionMatrix}");
+                Console.WriteLine();
+
+                Console.WriteLine();
+                for (int i = 0; i < columnLength; i++)
+                {
+                    for (int j = 0; j < rowLength; j++)
+                    {
+                        Console.Write($" {unionMatrix.MatrixValue[i, j]} ");
+                    }
+
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+
+
+                inverseMatrix = (1.0 / det) * unionMatrix;
 
                 inverseMatrix = LoadMatrixData(matrix, inverseMatrix);
 
@@ -270,6 +316,18 @@ namespace Elements_of_higher_mathematics
             {
                 Console.WriteLine("Обратной матрицы не существует");
             }
+
+            Console.WriteLine();
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    Console.Write($" {inverseMatrix.MatrixValue[i, j]} ");
+                }
+
+                Console.WriteLine();
+            }
+            Console.WriteLine();
 
             return inverseMatrix;
         }
@@ -393,12 +451,19 @@ namespace Elements_of_higher_mathematics
             var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
 
-            var newMatrix = new Matrix(matrix); // Новая матрица.
+            var newMatrix = new Matrix(new double[columnLength, rowLength]); // Новая матрица.
+
+            newMatrix.CommonMultiplier = matrix.CommonMultiplier;
+            newMatrix.IsMatrixInverse = matrix.IsMatrixInverse;
+            newMatrix.IsMatrixTransposition = matrix.IsMatrixTransposition;
+            newMatrix.IsMatrixUnion = matrix.IsMatrixUnion;
 
             Console.WriteLine();
             Console.WriteLine("Шестое свойство определителя");
             Console.WriteLine();
             Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
+            Console.WriteLine();
+            Console.WriteLine($"Множитель шестого правила: {multiplier}");
             Console.WriteLine();
 
             if (num1 != num2)
@@ -537,7 +602,7 @@ namespace Elements_of_higher_mathematics
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
             var determinant = 0.0;
 
-            matrix = FindTheCommonMultiplier(matrix);
+           // matrix = FindTheCommonMultiplier(matrix);
 
             for (int i = 0; i < columnLength; i++)
             {
