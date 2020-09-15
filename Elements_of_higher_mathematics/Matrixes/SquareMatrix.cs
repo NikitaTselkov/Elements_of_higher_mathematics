@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Elements_of_higher_mathematics.Matrixes
 {
@@ -85,13 +86,13 @@ namespace Elements_of_higher_mathematics.Matrixes
         }
 
         /// <summary>
-        /// Метод нахождения минора квадратной матрицы.
+        /// Метод нахождения минора элемента квадратной матрицы.
         /// </summary>
         /// <param name="matrix"> Матрица. </param>
         /// <param name="num1"> Колонка. </param>
         /// <param name="num2"> Строка. </param>
-        /// <returns> Минор квадратной матрицы. </returns>
-        public double FindMinor(Matrix matrix, int num1, int num2)
+        /// <returns> Минор элемента квадратной матрицы. </returns>
+        public double FindMinorMatrixElement(Matrix matrix, int num1, int num2)
         {
             var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки.
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки.
@@ -125,7 +126,7 @@ namespace Elements_of_higher_mathematics.Matrixes
             Console.WriteLine($"Алгебраическое дополнение {num1}, {num2}");
             Console.WriteLine();
 
-            var minor = FindMinor(matrix, num1, num2);
+            var minor = FindMinorMatrixElement(matrix, num1, num2);
             var cofactor = (int)Math.Pow(-1, num1 + num2) * minor;
 
 
@@ -693,6 +694,112 @@ namespace Elements_of_higher_mathematics.Matrixes
             return determinant;
         }
 
+        /// <summary>
+        /// Метод находящий минор матрицы.
+        /// </summary>
+        /// <param name="matrix"> Матрица. </param>
+        /// <param name="order"> Порядок матрицы. </param>
+        /// <param name="lastColumn"> Последняя колонка новой матрицы. </param>
+        /// <param name="lastRow"> Последняя строчка новой матрицы. </param>
+        /// <returns> Минор матрицы. </returns>
+        public double FindMinorMatrix(Matrix matrix, int order, int lastColumn, int lastRow)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Минор матрицы.");
+            Console.WriteLine();
+
+            if (order > lastColumn || order > lastRow)
+            {
+                throw new ArgumentException();
+            }
+
+            var result = 0.0;
+
+            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
+            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
+
+            var newMatrix = new Matrix(new double[order, order]);
+
+            var newColumnLength = newMatrix.MatrixValue.GetLength(0); // длина колонки новой матрицы.
+            var newRowLength = newMatrix.MatrixValue.GetLength(1); // длина строки новой матрицы.
+
+            var lastRowLength = lastRow;
+            var isStartFillingNewMatrix = false;
+
+            newColumnLength = newMatrix.MatrixValue.GetLength(0) - 1;
+
+            for (int i = columnLength; i > 0; i--)
+            {
+               newRowLength = newMatrix.MatrixValue.GetLength(1) - 1; // длина строки новой матрицы.
+
+               var remainderRowFilling = order;
+
+                for (int j = rowLength; j > 0; j--)
+                {
+                    if (lastColumn == i)
+                    {
+                        isStartFillingNewMatrix = true;
+                    }
+                    if (lastRowLength == j && remainderRowFilling != 0 && isStartFillingNewMatrix == true)
+                    {
+                        newMatrix.MatrixValue[newColumnLength, newRowLength] = matrix.MatrixValue[i - 1, j - 1];
+
+                        remainderRowFilling -= 1;
+
+                        newRowLength--;
+
+                        lastRowLength--;
+                    }
+                }
+
+                lastColumn--;
+                newColumnLength--;
+                lastRowLength = lastRow;
+                isStartFillingNewMatrix = false;
+
+                if (newColumnLength < 0)
+                {
+                    break;
+                }
+            }
+
+            Console.WriteLine();
+
+            newColumnLength = newMatrix.MatrixValue.GetLength(0); // длина колонки новой матрицы.
+            newRowLength = newMatrix.MatrixValue.GetLength(1); // длина строки новой матрицы.
+
+            for (int i = 0; i < newColumnLength; i++)
+            {
+                for (int j = 0; j < newRowLength; j++)
+                {
+                    Console.Write($" {newMatrix.MatrixValue[i, j]}");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            switch (order)
+            {
+                case 1:
+                    result = newMatrix.MatrixValue[0, 0];
+                    break;
+
+                case 2:
+                    result = FindDeterminantOfTheSecondOrder(newMatrix); // Вычисление определителя матрицы 2-ого порядка.
+                    break;
+
+                case 3:
+                    result = FindDeterminantOfTheThirdOrder(newMatrix); // Вычисление определителя матрицы 3-ого порядка.
+                    break;
+
+                default:
+                    break;
+            }
+
+            return result;
+        }
+
+
 
         /// <summary>
         /// Метод выносящий общий множитель из матрицы.
@@ -929,7 +1036,7 @@ namespace Elements_of_higher_mathematics.Matrixes
 
             Console.WriteLine();
 
-            Console.WriteLine($"Минор {column}, {row}");
+            Console.WriteLine($"Минор элемента {column}, {row}");
 
             Console.WriteLine();
             Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");

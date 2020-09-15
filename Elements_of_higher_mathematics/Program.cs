@@ -33,34 +33,20 @@ namespace Elements_of_higher_mathematics
 
             var matrix2_2_27 = new Matrix(new double[3, 1] { { 3 }, { 7 }, { 1 } });
 
-            var result = matrixEquationSystems.CalculateMatrixEquation(matrix_2_27, matrix2_2_27);
+            var matrixMinor = new Matrix(new double[3, 5] { { 2, -1, 5, 0, 6 }, { 7, 2, 3, 1, 3 }, { 1, 4, 2, 0, 3 } });
 
+            var result = squareMatrix.FindMinorMatrix(matrixMinor, 3, 3, 4);
 
+            Console.WriteLine(result);
 
-            for (int i = 0; i < result.MatrixValue.GetLength(0); i++)
-            {
-                for (int j = 0; j < result.MatrixValue.GetLength(1); j++)
-                {
-                    Console.Write($"{result.MatrixValue[i, j]} ");
-                }
-                Console.WriteLine();
-            }
-
-            var res = squareMatrix.FindInverseMatrix(matrix_2_27) + squareMatrix.FindInverseMatrix(matrix_2_27);
-
-            var res2 = res + squareMatrix.FindInverseMatrix(matrix_2_27);
-
-            res = res2 - squareMatrix.FindInverseMatrix(matrix_2_27);
-
-            for (int i = 0; i < res.MatrixValue.GetLength(0); i++)
-            {
-                for (int j = 0; j < res.MatrixValue.GetLength(1); j++)
-                {
-                    Console.Write($"{res.MatrixValue[i, j]} ");
-                }
-                Console.WriteLine();
-            }
-
+            //for (int i = 0; i < result.MatrixValue.GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < result.MatrixValue.GetLength(1); j++)
+            //    {
+            //        Console.Write($"{result.MatrixValue[i, j]} ");
+            //    }
+            //    Console.WriteLine();
+            //}
 
         }
     }
