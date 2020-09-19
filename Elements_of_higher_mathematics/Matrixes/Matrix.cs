@@ -293,6 +293,8 @@ namespace Elements_of_higher_mathematics.Matrixes
 
             Console.WriteLine();
 
+            MatrixValue = newMatrix.MatrixValue;
+            CommonMultiplier = newMatrix.CommonMultiplier;
 
             return newMatrix;
         }
@@ -384,6 +386,7 @@ namespace Elements_of_higher_mathematics.Matrixes
 
             Console.WriteLine();
 
+            MatrixValue = newMatrix.MatrixValue;
 
             return newMatrix;
         }
@@ -444,6 +447,301 @@ namespace Elements_of_higher_mathematics.Matrixes
             }
 
             return newMatrix;
+        }
+
+        /// <summary>
+        /// Метод находящий минор матрицы.
+        /// </summary>
+        /// <param name="matrix"> Матрица. </param>
+        /// <param name="order"> Порядок матрицы. </param>
+        /// <param name="lastColumn"> Последняя колонка новой матрицы. </param>
+        /// <param name="lastRow"> Последняя строчка новой матрицы. </param>
+        /// <returns> Минор матрицы. </returns>
+        public double FindMinorMatrix(Matrix matrix, int order, int lastColumn, int lastRow)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Минор матрицы.");
+            Console.WriteLine();
+
+            if (order > lastColumn || order > lastRow)
+            {
+                throw new ArgumentException();
+            }
+
+            var result = 0.0;
+
+            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
+            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
+
+            var newMatrix = new Matrix(new double[order, order]);
+
+            var newColumnLength = newMatrix.MatrixValue.GetLength(0); // длина колонки новой матрицы.
+            var newRowLength = newMatrix.MatrixValue.GetLength(1); // длина строки новой матрицы.
+
+            var lastRowLength = lastRow;
+            var isStartFillingNewMatrix = false;
+
+            var squareMatrix = new SquareMatrix();
+
+            newColumnLength = newMatrix.MatrixValue.GetLength(0) - 1;
+
+            for (int i = columnLength; i > 0; i--)
+            {
+                newRowLength = newMatrix.MatrixValue.GetLength(1) - 1; // длина строки новой матрицы.
+
+                var remainderRowFilling = order;
+
+                for (int j = rowLength; j > 0; j--)
+                {
+                    if (lastColumn == i)
+                    {
+                        isStartFillingNewMatrix = true;
+                    }
+                    if (lastRowLength == j && remainderRowFilling != 0 && isStartFillingNewMatrix == true)
+                    {
+                        newMatrix.MatrixValue[newColumnLength, newRowLength] = matrix.MatrixValue[i - 1, j - 1];
+
+                        remainderRowFilling -= 1;
+
+                        newRowLength--;
+
+                        lastRowLength--;
+                    }
+                }
+
+                lastColumn--;
+                newColumnLength--;
+                lastRowLength = lastRow;
+                isStartFillingNewMatrix = false;
+
+                if (newColumnLength < 0)
+                {
+                    break;
+                }
+            }
+
+            Console.WriteLine();
+
+            newColumnLength = newMatrix.MatrixValue.GetLength(0); // длина колонки новой матрицы.
+            newRowLength = newMatrix.MatrixValue.GetLength(1); // длина строки новой матрицы.
+
+            for (int i = 0; i < newColumnLength; i++)
+            {
+                for (int j = 0; j < newRowLength; j++)
+                {
+                    Console.Write($" {newMatrix.MatrixValue[i, j]}");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            switch (order)
+            {
+                case 1:
+                    result = newMatrix.MatrixValue[0, 0];
+                    break;
+
+                case 2:
+                    result = squareMatrix.FindDeterminantOfTheSecondOrder(newMatrix); // Вычисление определителя матрицы 2-ого порядка.
+                    break;
+
+                case 3:
+                    result = squareMatrix.FindDeterminantOfTheThirdOrder(newMatrix); // Вычисление определителя матрицы 3-ого порядка.
+                    break;
+
+                default:
+                    break;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Метод находящий ранг матрицы.
+        /// </summary>
+        /// <returns> Ранг матрицы. </returns>
+        public int FindRank()
+        {
+            var columnLength = MatrixValue.GetLength(0); // длина колонки матрицы.
+            var rowLength = MatrixValue.GetLength(1); // длина строки матрицы.
+
+            var rank = 0;
+
+            var newMatrix = this.MethodThatResetsTheColumnValues(0, 0);
+
+
+            for (int i = 0; i < columnLength - 1 ; i++)
+            {
+                newMatrix = this.MethodThatResetsTheColumnValues(i, i);
+            }
+
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    if (MatrixValue[i, j] != 0)
+                    {
+                        rank++;
+
+                        break;
+                    }
+                }
+            }
+
+            return rank;
+        }
+
+        public Matrix LoadMatrixData(Matrix matrix, Matrix newMatrix)
+        {
+            newMatrix.CommonMultiplier = matrix.CommonMultiplier;
+            newMatrix.IsMatrixTransposition = matrix.IsMatrixTransposition;
+            newMatrix.IsMatrixUnion = matrix.IsMatrixUnion;
+            newMatrix.IsMatrixInverse = matrix.IsMatrixInverse;
+
+            return newMatrix;
+        }
+
+        /// <summary>
+        /// Метод который обнуляет значения столбцов.
+        /// </summary>
+        /// <returns> Матрица. </returns>
+        public Matrix MethodThatResetsTheColumnValues(int column, int row)
+        {
+            var columnLength = MatrixValue.GetLength(0); // длина колонки матрицы.
+            var rowLength = MatrixValue.GetLength(1); // длина строки матрицы.
+
+            var matrixResult = new Matrix(new double[columnLength, rowLength]);
+
+            if (column == 0 && row == 0)
+            {
+                for (int i = 0; i < columnLength; i++)
+                {
+                    for (int j = 0; j < rowLength; j++)
+                    {
+                        if (MatrixValue[i, j] == 1)
+                        {
+                            if (i > 0)
+                            {
+                                matrixResult = SwapColumnsOrRows(row + 1, i + 1);
+                            }
+                            if (j > 0)
+                            {
+                                matrixResult = SwapColumnsOrRows(column + 1, j + 1, enumMatrix.column);
+                            }
+
+                            goto Break;
+                        }
+                    }
+                }
+            }
+
+        Break:
+
+            var isЕlementZero = false;
+
+            if (MatrixValue[column, row] == 0)
+            {
+                column--;
+                row--;
+                isЕlementZero = true;
+            }
+
+            while (true)
+            {
+                if (MatrixValue[column, row] != 1)
+                {
+                    var result = 0.0;
+                    var multiplier = 0.0;
+                    var multiplier2 = 1.0;
+
+                    if (MatrixValue[column, row] > 0)
+                    {
+                        if (MatrixValue[column + 1, row] > 0)
+                        {
+                            multiplier2 *= -1;
+                        }
+                        else
+                        {
+                            multiplier2 *= 1;
+                        }
+                    }
+                    else
+                    {
+                        if (MatrixValue[column + 1, row] > 0)
+                        {
+                            multiplier2 *= 1;
+                        }
+                        else
+                        {
+                            multiplier2 *= -1;
+                        }
+                    }
+
+                    var resultValue = 1.0;
+
+                    if (column != 0 && row != 0)
+                    {
+                        resultValue = 0;
+                    }
+
+                    do
+                    {
+                        result = Math.Round(MatrixValue[column, row] * multiplier + MatrixValue[column + 1, row], 2);
+
+                        if (result != resultValue)
+                        {
+                            multiplier += 0.1 * multiplier2;
+                            multiplier = Math.Round(multiplier, 2);
+                        }
+                    }
+                    while (result != resultValue);
+
+                    if (multiplier == 0)
+                    {
+                        multiplier = multiplier2;
+                    }
+
+                    if (isЕlementZero == true)
+                    {
+                        matrixResult = SixthPropertyOfTheDeterminant(multiplier, row + 1, row + 3);
+                    }
+                    else
+                    {
+                        matrixResult = SixthPropertyOfTheDeterminant(multiplier, row + 1, row + 2);
+                    }
+
+                    if (column == 0 && row == 0)
+                    {
+                         matrixResult = SwapColumnsOrRows(row + 1, row + 2);
+                    }
+
+                    MatrixValue = matrixResult.MatrixValue;
+                }
+                else
+                {
+                    for (int i = 1; i < columnLength; i++)
+                    {
+                        var multiplier = MatrixValue[i, row];
+
+                        if (multiplier != 0)
+                        {
+                            matrixResult = SixthPropertyOfTheDeterminant(multiplier * -1, row + 1, i + 1);
+
+                            MatrixValue = matrixResult.MatrixValue;
+                        }
+                    }
+
+                    break;
+                }
+
+                if (column != 0 && row != 0)
+                {
+                    break;
+                }
+
+            }
+
+            return matrixResult;
         }
 
         /// <summary>
@@ -589,123 +887,6 @@ namespace Elements_of_higher_mathematics.Matrixes
             }
 
             return matrixResult;
-        }
-
-        /// <summary>
-        /// Метод находящий минор матрицы.
-        /// </summary>
-        /// <param name="matrix"> Матрица. </param>
-        /// <param name="order"> Порядок матрицы. </param>
-        /// <param name="lastColumn"> Последняя колонка новой матрицы. </param>
-        /// <param name="lastRow"> Последняя строчка новой матрицы. </param>
-        /// <returns> Минор матрицы. </returns>
-        public double FindMinorMatrix(Matrix matrix, int order, int lastColumn, int lastRow)
-        {
-            Console.WriteLine();
-            Console.WriteLine("Минор матрицы.");
-            Console.WriteLine();
-
-            if (order > lastColumn || order > lastRow)
-            {
-                throw new ArgumentException();
-            }
-
-            var result = 0.0;
-
-            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
-            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
-
-            var newMatrix = new Matrix(new double[order, order]);
-
-            var newColumnLength = newMatrix.MatrixValue.GetLength(0); // длина колонки новой матрицы.
-            var newRowLength = newMatrix.MatrixValue.GetLength(1); // длина строки новой матрицы.
-
-            var lastRowLength = lastRow;
-            var isStartFillingNewMatrix = false;
-
-            var squareMatrix = new SquareMatrix();
-
-            newColumnLength = newMatrix.MatrixValue.GetLength(0) - 1;
-
-            for (int i = columnLength; i > 0; i--)
-            {
-                newRowLength = newMatrix.MatrixValue.GetLength(1) - 1; // длина строки новой матрицы.
-
-                var remainderRowFilling = order;
-
-                for (int j = rowLength; j > 0; j--)
-                {
-                    if (lastColumn == i)
-                    {
-                        isStartFillingNewMatrix = true;
-                    }
-                    if (lastRowLength == j && remainderRowFilling != 0 && isStartFillingNewMatrix == true)
-                    {
-                        newMatrix.MatrixValue[newColumnLength, newRowLength] = matrix.MatrixValue[i - 1, j - 1];
-
-                        remainderRowFilling -= 1;
-
-                        newRowLength--;
-
-                        lastRowLength--;
-                    }
-                }
-
-                lastColumn--;
-                newColumnLength--;
-                lastRowLength = lastRow;
-                isStartFillingNewMatrix = false;
-
-                if (newColumnLength < 0)
-                {
-                    break;
-                }
-            }
-
-            Console.WriteLine();
-
-            newColumnLength = newMatrix.MatrixValue.GetLength(0); // длина колонки новой матрицы.
-            newRowLength = newMatrix.MatrixValue.GetLength(1); // длина строки новой матрицы.
-
-            for (int i = 0; i < newColumnLength; i++)
-            {
-                for (int j = 0; j < newRowLength; j++)
-                {
-                    Console.Write($" {newMatrix.MatrixValue[i, j]}");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-
-            switch (order)
-            {
-                case 1:
-                    result = newMatrix.MatrixValue[0, 0];
-                    break;
-
-                case 2:
-                    result = squareMatrix.FindDeterminantOfTheSecondOrder(newMatrix); // Вычисление определителя матрицы 2-ого порядка.
-                    break;
-
-                case 3:
-                    result = squareMatrix.FindDeterminantOfTheThirdOrder(newMatrix); // Вычисление определителя матрицы 3-ого порядка.
-                    break;
-
-                default:
-                    break;
-            }
-
-            return result;
-        }
-
-        public Matrix LoadMatrixData(Matrix matrix, Matrix newMatrix)
-        {
-            newMatrix.CommonMultiplier = matrix.CommonMultiplier;
-            newMatrix.IsMatrixTransposition = matrix.IsMatrixTransposition;
-            newMatrix.IsMatrixUnion = matrix.IsMatrixUnion;
-            newMatrix.IsMatrixInverse = matrix.IsMatrixInverse;
-
-            return newMatrix;
         }
 
         public static Matrix operator +(Matrix matrixA, Matrix matrixB)

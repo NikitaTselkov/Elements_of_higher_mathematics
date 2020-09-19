@@ -332,8 +332,6 @@ namespace Elements_of_higher_mathematics.Matrixes
             return inverseMatrix;
         }
 
-      
-
         /// <summary>
         /// Метод находящий определитель матрицы путем элементарных преобразований.
         /// </summary>
@@ -345,92 +343,11 @@ namespace Elements_of_higher_mathematics.Matrixes
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
             var determinant = 0.0;
 
-           // matrix = FindTheCommonMultiplier(matrix);
-
-            for (int i = 0; i < columnLength; i++)
+            if (columnLength == rowLength)
             {
-                for (int j = 0; j < rowLength; j++)
-                {
-                    if (matrix.MatrixValue[i, j] == 1) 
-                    {
-                        if (i > 0)
-                        {
-                            matrix = matrix.SwapColumnsOrRows(1, i + 1);
-                        }
-                        if (j > 0)
-                        {
-                            matrix = matrix.SwapColumnsOrRows( 1, j + 1, enumMatrix.column);
-                        }
-
-                        goto Break;
-                    }
-                }
+               matrix = matrix.MethodThatResetsTheColumnValues(0, 0);
             }
-
-            Break:
-
-            while (true)
-            {
-                if (matrix.MatrixValue[0, 0] != 1)
-                {
-                    var result = 0.0;
-                    var multiplier = 1.0;
-                    var multiplier2 = 1.0;
-
-                    if (matrix.MatrixValue[0, 0] > 0)
-                    {
-                        if (matrix.MatrixValue[1, 0] > 0)
-                        {
-                            multiplier2 *= -1;
-                        }
-                        else
-                        {
-                            multiplier2 *= 1;
-                        }
-                    }
-                    else
-                    {
-                        if (matrix.MatrixValue[1, 0] > 0)
-                        {
-                            multiplier2 *= 1;
-                        }
-                        else
-                        {
-                            multiplier2 *= -1;
-                        }
-                    }
-
-                    while (result != 1.0)
-                    {
-                        result = matrix.MatrixValue[0, 0] * multiplier + matrix.MatrixValue[1, 0];
-
-                        if (result != 1.0)
-                        {
-                            multiplier += 0.1 * multiplier2;
-                            multiplier = Math.Round(multiplier, 2);
-                        }
-                    }
-
-                    matrix = matrix.SixthPropertyOfTheDeterminant(multiplier, 1, 2);
-
-                    matrix = matrix.SwapColumnsOrRows(1, 2);
-                }
-                else
-                {
-                    for (int i = 1; i < columnLength; i++)
-                    {
-                        var multiplier = matrix.MatrixValue[i, 0];
-
-                        if (multiplier != 0)
-                        {
-                            matrix = matrix.SixthPropertyOfTheDeterminant(multiplier * -1, 1, i + 1);
-                        }
-                    }
-
-                    break;
-                }
-            }
-
+           
             determinant = FindDecompositionOfMatrix(matrix, 1, enumMatrix.column);
 
             return determinant;
