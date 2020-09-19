@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:View.Pages"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="720"
       d:DesignWidth="1280"
@@ -26,12 +27,61 @@
         <Grid
             Background="{StaticResource Gray}">
 
-            <ComboBox>
-                <TextBlock>1</TextBlock>
-                <TextBlock>2</TextBlock>
-                <TextBlock>3</TextBlock>
-                <TextBlock>4</TextBlock>
-            </ComboBox>
+            <DataGrid
+                ColumnWidth="50"
+                ItemsSource="{Binding MatrixA}"
+                AutoGenerateColumns="True"
+                CanUserAddRows="false">
+
+             
+
+            </DataGrid>
+
+
+            <Viewbox
+                Margin="50 50"
+                VerticalAlignment="Bottom">
+
+                <DockPanel
+                    HorizontalAlignment="Center">
+
+                    <ComboBox
+                        Margin="0 0 10 0"
+                        SelectedValue="{Binding MatrixRowCount}">
+
+                        <sys:Int32>1</sys:Int32>
+                        <sys:Int32>2</sys:Int32>
+                        <sys:Int32>3</sys:Int32>
+                        <sys:Int32>4</sys:Int32>
+
+                        
+                    </ComboBox>
+
+                    <ComboBox
+                        Margin="10 0 15 0"
+                        SelectedValue="{Binding MatrixColumnCount}">
+
+                        <sys:Int32>1</sys:Int32>
+                        <sys:Int32>2</sys:Int32>
+                        <sys:Int32>3</sys:Int32>
+                        <sys:Int32>4</sys:Int32>
+
+                    </ComboBox>
+
+
+                    <ComboBox
+                        Width="150"
+                        Margin="80 0 0 0"
+                        SelectedValue="{Binding CurrentMatrixName}">
+                        
+                        <sys:String>A</sys:String>
+                        <sys:String>B</sys:String>
+                        
+                    </ComboBox>
+
+                </DockPanel>
+
+            </Viewbox>
 
         </Grid>
 

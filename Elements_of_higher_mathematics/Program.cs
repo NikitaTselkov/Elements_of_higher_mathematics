@@ -13,7 +13,7 @@ namespace Elements_of_higher_mathematics
             SquareMatrix squareMatrix = new SquareMatrix();
             Matrix matrix = new Matrix();
             MatrixEquationSystems matrixEquationSystems = new MatrixEquationSystems();
-
+            AugmentedMatrix augmentedMatrix = new AugmentedMatrix();
 
 
             var matrixA = new Matrix(new double[3, 3] { { 7, -4, 5 }, { 8, -1, 0 }, { 6, 9, -3 } });
@@ -26,24 +26,50 @@ namespace Elements_of_higher_mathematics
 
             var matrixE = new Matrix(new double[2, 2] { { 7, -4 }, { 8, -1 } });
 
+            var matrixF = new Matrix(new double[3, 3] { { 1, 12, 2 }, { 2, 2, 2 }, { 3, 4, 1 } });
+
 
             var matrix_1_27 = new Matrix(new double[4, 4] { { 3, 1, 2, -3 }, { 8, 0, -4, -1 }, { 2, -2, 3, 4 }, { 2, 1, 1, 2 } });
 
-            var matrix_2_27 = new Matrix(new double[3, 3] { { 2, 1, 3 }, { 3, 2, 4 }, { 2, -3, 1 } });
+            var matrix_2_27 = new Matrix(new double[3, 4] { { 1, 5, 4, 3 }, { 1, -1, 2, -1 }, { 5, 3, 8, 1 } });
 
-            var matrix2_2_27 = new Matrix(new double[3, 1] { { 3 }, { 7 }, { 1 } });
+            var matrix2_2_27 = new Matrix(new double[3, 1] { { 1 }, { 0 }, { 1 } });
 
-            var matrixMinor = new Matrix(new double[3, 5] { { 2, -1, 5, 0, 6 }, { 7, 2, 3, 1, 3 }, { 1, 4, 2, 0, 3 } });
+            //var matrixMinor = new Matrix(new double[3, 5] { { 2, -1, 5, 0, 6 }, { 7, 2, 3, 1, 3 }, { 1, 4, 2, 0, 3 } });
 
-            var result = squareMatrix.FindMinorMatrix(matrixMinor, 3, 3, 4);
+            // var result = matrix.FindMinorMatrix(matrixMinor, 2, 3, 4);
 
-            Console.WriteLine(result);
+             var result = matrixF.FindTheCommonMultiplier();
 
-            //for (int i = 0; i < result.MatrixValue.GetLength(0); i++)
+            result = result.SwapColumnsOrRows(1, 2);
+
+            // Console.WriteLine(result);
+
+            //var AugmentedMatrix = new AugmentedMatrix(matrix_2_27, matrix2_2_27);
+
+            //AugmentedMatrix.Matrix = AugmentedMatrix.Matrix.SwapColumnsOrRows(1, 2);
+
+            for (int i = 0; i < result.MatrixValue.GetLength(0); i++)
+            {
+                for (int j = 0; j < result.MatrixValue.GetLength(1); j++)
+                {
+                    Console.Write($"{result.MatrixValue[i, j]} ");
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
+            Console.WriteLine(result.CommonMultiplier);
+
+            //AugmentedMatrix.AugmentedMatrixValue = AugmentedMatrix.AugmentedMatrixValue.SixthPropertyOfTheDeterminant(-1, 1, 2);
+
+            //AugmentedMatrix.AugmentedMatrixValue = AugmentedMatrix.AugmentedMatrixValue.SixthPropertyOfTheDeterminant(-5, 1, 3);
+
+            //for (int i = 0; i < AugmentedMatrix.AugmentedMatrixValue.MatrixValue.GetLength(0); i++)
             //{
-            //    for (int j = 0; j < result.MatrixValue.GetLength(1); j++)
+            //    for (int j = 0; j < AugmentedMatrix.AugmentedMatrixValue.MatrixValue.GetLength(1); j++)
             //    {
-            //        Console.Write($"{result.MatrixValue[i, j]} ");
+            //        Console.Write($"{AugmentedMatrix.AugmentedMatrixValue.MatrixValue[i, j]} ");
             //    }
             //    Console.WriteLine();
             //}

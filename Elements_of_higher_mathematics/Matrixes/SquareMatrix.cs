@@ -223,7 +223,6 @@ namespace Elements_of_higher_mathematics.Matrixes
         /// <returns> Союзная матрица. </returns>
         public Matrix FindUnionMatrix(Matrix matrix)
         {
-
             Console.WriteLine();
             Console.WriteLine("Союзная матрица.");
             Console.WriteLine();
@@ -241,7 +240,7 @@ namespace Elements_of_higher_mathematics.Matrixes
                 }
             }
 
-            unionMatrix = LoadMatrixData(matrix, unionMatrix);
+            unionMatrix = unionMatrix.LoadMatrixData(matrix, unionMatrix);
 
             unionMatrix = unionMatrix.MatrixTransposition(); // Транспонирование матрицы.
 
@@ -307,7 +306,7 @@ namespace Elements_of_higher_mathematics.Matrixes
 
                 inverseMatrix = (1.0 / det) * unionMatrix;
 
-                inverseMatrix = LoadMatrixData(matrix, inverseMatrix);
+                inverseMatrix = inverseMatrix.LoadMatrixData(matrix, inverseMatrix);
 
                 inverseMatrix.IsMatrixUnion = false;
 
@@ -333,264 +332,7 @@ namespace Elements_of_higher_mathematics.Matrixes
             return inverseMatrix;
         }
 
-        /// <summary>
-        /// Метод меняющий элементы в матрицах местами.
-        /// </summary>
-        /// <param name="matrix"> Матрица. </param>
-        /// <param name="num1"> Первая строка или столбик. </param>
-        /// <param name="num2"> Вторая строка или столбик. </param>
-        /// <param name="enumMatrix"> Переключатель между строкой или столбиком. </param>
-        /// <returns> Измененая матрица. </returns>
-        public Matrix SwapColumnsOrRows(Matrix matrix, int num1, int num2, enumMatrix enumMatrix = enumMatrix.row)
-        {
-            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
-            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
-
-            var newMatrix = new Matrix(new double[columnLength, rowLength]); // Новая матрица.
-
-            if (enumMatrix == enumMatrix.row)
-            {
-                for (int i = 0; i < columnLength; i++)
-                {
-                    for (int j = 0; j < rowLength; j++)
-                    {
-                        if (i == num1 - 1)
-                        {
-                            newMatrix.MatrixValue[i, j] = matrix.MatrixValue[num2 - 1, j];
-                        }
-                        else if (i == num2 - 1)
-                        {
-                            newMatrix.MatrixValue[i, j] = matrix.MatrixValue[num1 -1 , j];
-                        }
-                        else
-                        {
-                            newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, j];
-                        }
-                    }
-                }
-            }
-            else if (enumMatrix == enumMatrix.column)
-            {
-                for (int i = 0; i < columnLength; i++)
-                {
-                    for (int j = 0; j < rowLength; j++)
-                    {
-                        if (j == num1 - 1)
-                        {
-                            newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, num2 - 1];
-                        }
-                        else if (j == num2 - 1)
-                        {
-                            newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, num1 - 1];
-                        }
-                        else
-                        {
-                            newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, j];
-                        }
-                    }
-                }
-            }
-
-            newMatrix = LoadMatrixData(matrix, newMatrix);
-
-            newMatrix.CommonMultiplier = matrix.CommonMultiplier * -1;
-
-
-            Console.WriteLine();
-
-            Console.WriteLine($"Меняем {enumMatrix} {num1} и {num2} местами");
-
-            Console.WriteLine();
-
-            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
-
-            Console.WriteLine();
-
-            for (int i = 0; i < columnLength; i++)
-            {
-                for (int j = 0; j < rowLength; j++)
-                {
-                    Console.Write($" {matrix.MatrixValue[i, j]} ");
-                }
-
-                Console.WriteLine();
-            }
-
-            Console.WriteLine();
-
-            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
-
-            Console.WriteLine();
-
-            for (int i = 0; i < columnLength; i++)
-            {
-                for (int j = 0; j < rowLength; j++)
-                {
-                    Console.Write($" {newMatrix.MatrixValue[i, j]} ");
-                }
-
-                Console.WriteLine();
-            }
-
-            Console.WriteLine();
-
-
-            return newMatrix;
-        }
-
-        /// <summary>
-        /// Метод умножающий строку или колонку num1 на number и складывающий ее со строкой или колонкой num2.
-        /// </summary>
-        /// <param name="matrix"> Матрица. </param>
-        /// <param name="multiplier"> Множитель. </param>
-        /// <param name="num1"> Первая строка или столбик. </param>
-        /// <param name="num2"> Вторая строка или столбик. </param>
-        /// <param name="enumMatrix"> Переключатель между строкой или столбиком. </param>
-        /// <returns> Измененая матрица. </returns>
-        public Matrix SixthPropertyOfTheDeterminant(Matrix matrix, double multiplier, int num1, int num2, enumMatrix enumMatrix = enumMatrix.row)
-        {
-            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
-            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
-
-            var newMatrix = new Matrix(new double[columnLength, rowLength]); // Новая матрица.
-
-            newMatrix.CommonMultiplier = matrix.CommonMultiplier;
-            newMatrix.IsMatrixInverse = matrix.IsMatrixInverse;
-            newMatrix.IsMatrixTransposition = matrix.IsMatrixTransposition;
-            newMatrix.IsMatrixUnion = matrix.IsMatrixUnion;
-
-            Console.WriteLine();
-            Console.WriteLine("Шестое свойство определителя");
-            Console.WriteLine();
-            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
-            Console.WriteLine();
-            Console.WriteLine($"Множитель шестого правила: {multiplier}");
-            Console.WriteLine();
-
-            if (num1 != num2)
-            {
-                if (enumMatrix == enumMatrix.row)
-                {
-                    for (int i = 0; i < columnLength; i++)
-                    {
-                        for (int j = 0; j < rowLength; j++)
-                        {
-                            if (num2 - 1 == i)
-                            {
-                                newMatrix.MatrixValue[i, j] = matrix.MatrixValue[num1 - 1, j] * multiplier + matrix.MatrixValue[num2 - 1, j];
-
-                                Console.Write($"({matrix.MatrixValue[num1 - 1, j]} * {multiplier} + {matrix.MatrixValue[num2 - 1, j]})");
-                            }
-                            else
-                            {
-                                newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, j];
-
-                                Console.Write($"{newMatrix.MatrixValue[i, j]} ");
-                            }
-                        }
-                        Console.WriteLine();
-                    }
-                }
-                else if (enumMatrix == enumMatrix.column)
-                {
-                    for (int i = 0; i < columnLength; i++)
-                    {
-                        for (int j = 0; j < rowLength; j++)
-                        {
-                            if (num2 - 1 == j)
-                            {
-                                newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, num1 - 1] * multiplier + matrix.MatrixValue[i, num2 - 1];
-
-                                Console.Write($"({matrix.MatrixValue[i, num1 - 1]} * {multiplier} + {matrix.MatrixValue[i, num2 - 1]})");
-                            }
-                            else
-                            {
-                                newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, j];
-
-                                Console.Write($"{newMatrix.MatrixValue[i, j]} ");
-                            }
-                        }
-                        Console.WriteLine();
-                    }
-                }
-            }
-
-            newMatrix = LoadMatrixData(matrix, newMatrix);
-
-            Console.WriteLine();
-            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
-            Console.WriteLine();
-            for (int i = 0; i < columnLength; i++)
-            {
-                for (int j = 0; j < rowLength; j++)
-                {
-                    Console.Write($"{newMatrix.MatrixValue[i, j]} ");
-                }
-                Console.WriteLine();
-            }
-
-            Console.WriteLine();
-
-
-            return newMatrix;
-        }     
-
-        /// <summary>
-        /// Метод находящий и выносящий общий множитель из матрицы.
-        /// </summary>
-        /// <param name="matrix"> Матрица. </param>
-        /// <returns> Измененая матрица. </returns>
-        public Matrix FindTheCommonMultiplier(Matrix matrix)
-        {
-            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
-            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
-
-            var newMatrix = new Matrix(new double[columnLength, rowLength]);
-
-            newMatrix = new Matrix(matrix);
-
-            for (int i = 0; i < columnLength; i++)
-            {
-                var commonMultiplier = 1.0;
-                var isThereCommonMultiplier = true;
-                for (int j = 0; j < rowLength; j++)
-                {
-                    if (matrix.MatrixValue[i, j] != 1)
-                    {
-                        if (rowLength != j + 1)
-                        {
-                            if (commonMultiplier == 1.0)
-                            {
-                                commonMultiplier = GCF(matrix.MatrixValue[i, j], matrix.MatrixValue[i, j + 1]);
-                            }
-                            else
-                            {
-                                if (commonMultiplier % GCF(matrix.MatrixValue[i, j], matrix.MatrixValue[i, j + 1]) != 0)
-                                {
-                                    isThereCommonMultiplier = false;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        commonMultiplier = 1.0;
-                        isThereCommonMultiplier = false;
-                    }
-                }
-                if (isThereCommonMultiplier == true && commonMultiplier != -1)
-                {
-                    if (commonMultiplier < 0)
-                    {
-                        commonMultiplier *= -1;
-                    }
-
-                    newMatrix = TakeOutTheTotalMultiplier(matrix, i + 1, commonMultiplier, enumMatrix.row);
-                }
-            }
-
-            return newMatrix;
-        }
+      
 
         /// <summary>
         /// Метод находящий определитель матрицы путем элементарных преобразований.
@@ -613,11 +355,11 @@ namespace Elements_of_higher_mathematics.Matrixes
                     {
                         if (i > 0)
                         {
-                            matrix = SwapColumnsOrRows(matrix, 1, i + 1);
+                            matrix = matrix.SwapColumnsOrRows(1, i + 1);
                         }
                         if (j > 0)
                         {
-                            matrix = SwapColumnsOrRows(matrix, 1, j + 1, enumMatrix.column);
+                            matrix = matrix.SwapColumnsOrRows( 1, j + 1, enumMatrix.column);
                         }
 
                         goto Break;
@@ -669,9 +411,9 @@ namespace Elements_of_higher_mathematics.Matrixes
                         }
                     }
 
-                    matrix = SixthPropertyOfTheDeterminant(matrix, multiplier, 1, 2);
+                    matrix = matrix.SixthPropertyOfTheDeterminant(multiplier, 1, 2);
 
-                    matrix = SwapColumnsOrRows(matrix, 1, 2);
+                    matrix = matrix.SwapColumnsOrRows(1, 2);
                 }
                 else
                 {
@@ -681,7 +423,7 @@ namespace Elements_of_higher_mathematics.Matrixes
 
                         if (multiplier != 0)
                         {
-                            matrix = SixthPropertyOfTheDeterminant(matrix, multiplier * -1, 1, i + 1);
+                            matrix = matrix.SixthPropertyOfTheDeterminant(multiplier * -1, 1, i + 1);
                         }
                     }
 
@@ -692,216 +434,6 @@ namespace Elements_of_higher_mathematics.Matrixes
             determinant = FindDecompositionOfMatrix(matrix, 1, enumMatrix.column);
 
             return determinant;
-        }
-
-        /// <summary>
-        /// Метод находящий минор матрицы.
-        /// </summary>
-        /// <param name="matrix"> Матрица. </param>
-        /// <param name="order"> Порядок матрицы. </param>
-        /// <param name="lastColumn"> Последняя колонка новой матрицы. </param>
-        /// <param name="lastRow"> Последняя строчка новой матрицы. </param>
-        /// <returns> Минор матрицы. </returns>
-        public double FindMinorMatrix(Matrix matrix, int order, int lastColumn, int lastRow)
-        {
-            Console.WriteLine();
-            Console.WriteLine("Минор матрицы.");
-            Console.WriteLine();
-
-            if (order > lastColumn || order > lastRow)
-            {
-                throw new ArgumentException();
-            }
-
-            var result = 0.0;
-
-            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
-            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
-
-            var newMatrix = new Matrix(new double[order, order]);
-
-            var newColumnLength = newMatrix.MatrixValue.GetLength(0); // длина колонки новой матрицы.
-            var newRowLength = newMatrix.MatrixValue.GetLength(1); // длина строки новой матрицы.
-
-            var lastRowLength = lastRow;
-            var isStartFillingNewMatrix = false;
-
-            newColumnLength = newMatrix.MatrixValue.GetLength(0) - 1;
-
-            for (int i = columnLength; i > 0; i--)
-            {
-               newRowLength = newMatrix.MatrixValue.GetLength(1) - 1; // длина строки новой матрицы.
-
-               var remainderRowFilling = order;
-
-                for (int j = rowLength; j > 0; j--)
-                {
-                    if (lastColumn == i)
-                    {
-                        isStartFillingNewMatrix = true;
-                    }
-                    if (lastRowLength == j && remainderRowFilling != 0 && isStartFillingNewMatrix == true)
-                    {
-                        newMatrix.MatrixValue[newColumnLength, newRowLength] = matrix.MatrixValue[i - 1, j - 1];
-
-                        remainderRowFilling -= 1;
-
-                        newRowLength--;
-
-                        lastRowLength--;
-                    }
-                }
-
-                lastColumn--;
-                newColumnLength--;
-                lastRowLength = lastRow;
-                isStartFillingNewMatrix = false;
-
-                if (newColumnLength < 0)
-                {
-                    break;
-                }
-            }
-
-            Console.WriteLine();
-
-            newColumnLength = newMatrix.MatrixValue.GetLength(0); // длина колонки новой матрицы.
-            newRowLength = newMatrix.MatrixValue.GetLength(1); // длина строки новой матрицы.
-
-            for (int i = 0; i < newColumnLength; i++)
-            {
-                for (int j = 0; j < newRowLength; j++)
-                {
-                    Console.Write($" {newMatrix.MatrixValue[i, j]}");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-
-            switch (order)
-            {
-                case 1:
-                    result = newMatrix.MatrixValue[0, 0];
-                    break;
-
-                case 2:
-                    result = FindDeterminantOfTheSecondOrder(newMatrix); // Вычисление определителя матрицы 2-ого порядка.
-                    break;
-
-                case 3:
-                    result = FindDeterminantOfTheThirdOrder(newMatrix); // Вычисление определителя матрицы 3-ого порядка.
-                    break;
-
-                default:
-                    break;
-            }
-
-            return result;
-        }
-
-
-
-        /// <summary>
-        /// Метод выносящий общий множитель из матрицы.
-        /// </summary>
-        /// <param name="matrix"> Матрица. </param>
-        /// <param name="num"> Строка или колонка. </param>
-        /// <param name="commonMultiplier"> Общий множитель. </param>
-        /// <param name="enumMatrix"> Переключатель между строкой или столбиком. </param>
-        /// <returns> Измененая матрица. </returns>
-        private Matrix TakeOutTheTotalMultiplier(Matrix matrix, int num, double commonMultiplier, enumMatrix enumMatrix = enumMatrix.row)
-        {
-            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
-            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
-
-            var newMatrix = new Matrix(new double[columnLength, rowLength]); // Новая матрица.
-
-            if (enumMatrix == enumMatrix.row)
-            {
-                for (int i = 0; i < columnLength; i++)
-                {
-                    for (int j = 0; j < rowLength; j++)
-                    {
-                        if (num - 1 == i)
-                        {
-                            newMatrix.MatrixValue[i, j] = matrix.MatrixValue[num - 1, j] / commonMultiplier;
-                        }
-                        else
-                        {
-                            newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, j];
-                        }
-                    }
-                }
-            }
-            else if (enumMatrix == enumMatrix.column)
-            {
-                for (int i = 0; i < columnLength; i++)
-                {
-                    for (int j = 0; j < rowLength; j++)
-                    {
-                        if (num - 1 == j)
-                        {
-                            newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, num - 1] / commonMultiplier;
-                        }
-                        else
-                        {
-                            newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, j];
-                        }
-                    }
-                }
-            }
-
-            newMatrix = LoadMatrixData(matrix, newMatrix);
-
-            newMatrix.CommonMultiplier = commonMultiplier * matrix.CommonMultiplier;
-
-
-            Console.WriteLine($"Общий множитель");
-
-            Console.WriteLine();
-
-            for (int i = 0; i < columnLength; i++)
-            {
-                for (int j = 0; j < rowLength; j++)
-                {
-                    Console.Write($" {matrix.MatrixValue[i, j]}");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-
-            Console.Write($"Множитель: {newMatrix.CommonMultiplier}");
-
-            Console.WriteLine();
-
-            for (int i = 0; i < columnLength; i++)
-            {
-                for (int j = 0; j < rowLength; j++)
-                {
-                    Console.Write($" {newMatrix.MatrixValue[i, j]}");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-
-            return newMatrix;
-        }
-
-        /// <summary>
-        /// Метод нахождения НОД.
-        /// </summary>
-        /// <param name="a"> Первое число. </param>
-        /// <param name="b"> Второе число. </param>
-        /// <returns> НОД. </returns>
-        private double GCF(double a, double b)
-        {
-            while (b != 0)
-            {
-                double temp = b;
-                b = a % b;
-                a = temp;
-            }
-            return a;
         }
 
         /// <summary>
@@ -1031,7 +563,7 @@ namespace Elements_of_higher_mathematics.Matrixes
                 }
             }
 
-            newMatrix = LoadMatrixData(matrix, newMatrix);
+            newMatrix = newMatrix.LoadMatrixData(matrix, newMatrix);
 
 
             Console.WriteLine();
@@ -1069,16 +601,5 @@ namespace Elements_of_higher_mathematics.Matrixes
 
             return newMatrix;
         }
-
-        private Matrix LoadMatrixData(Matrix matrix, Matrix newMatrix)
-        {
-            newMatrix.CommonMultiplier = matrix.CommonMultiplier;
-            newMatrix.IsMatrixTransposition = matrix.IsMatrixTransposition;
-            newMatrix.IsMatrixUnion = matrix.IsMatrixUnion;
-            newMatrix.IsMatrixInverse = matrix.IsMatrixInverse;
-
-            return newMatrix;
-        }
-
     }
 }
