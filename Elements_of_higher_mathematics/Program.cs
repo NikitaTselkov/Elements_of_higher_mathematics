@@ -31,7 +31,7 @@ namespace Elements_of_higher_mathematics
 
             var matrix_1_27 = new Matrix(new double[4, 4] { { 3, 1, 2, -3 }, { 8, 0, -4, -1 }, { 2, -2, 3, 4 }, { 2, 1, 1, 2 } });
 
-            var matrix_2_27 = new Matrix(new double[3, 4] { { 1, 5, 4, 3 }, { 1, -1, 2, -1 }, { 5, 3, 8, 1 } });
+            var matrix_2_27 = new Matrix(new double[3, 4] { { 1, 5, 4, 3 }, { 2, -1, 2, -1 }, { 5, 3, 8, 1 } });
 
             var matrix2_2_27 = new Matrix(new double[3, 1] { { 1 }, { 0 }, { 1 } });
 
@@ -39,9 +39,11 @@ namespace Elements_of_higher_mathematics
 
             //var res2 = res.MethodThatResetsTheColumnValues(1, 1);
 
-            Console.WriteLine(matrixD.FindRank());
+          //  Console.WriteLine(matrixD.FindRank());
 
-            //var AugmentedMatrix = new AugmentedMatrix(matrix_2_27, matrix2_2_27);
+            var AugmentedMatrix = new AugmentedMatrix(matrix_2_27, matrix2_2_27);
+
+            Console.WriteLine(matrixEquationSystems.IsTheSystemOfEquationsCompatible(AugmentedMatrix));
 
             //AugmentedMatrix.Matrix = AugmentedMatrix.Matrix.SwapColumnsOrRows(1, 2);
 

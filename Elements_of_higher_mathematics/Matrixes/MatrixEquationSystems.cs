@@ -21,5 +21,37 @@ namespace Elements_of_higher_mathematics.Matrixes
             return result;
         }
 
+        /// <summary>
+        /// Иследование матрицы по теореме Кронекера-Капелли на совместность.
+        /// </summary>
+        /// <param name="augmentedMatrix"> Расширенная матрица. </param>
+        /// <returns> Если матрица совместная. </returns>
+        public bool IsTheSystemOfEquationsCompatible(AugmentedMatrix augmentedMatrix)
+        {
+            var isTheSystemOfEquationsCompatible = false;
+
+            var rankMatrix = augmentedMatrix.Matrix.FindRank();
+
+            var rankAugmentedMatrix = augmentedMatrix.AugmentedMatrixValue.FindRank();
+
+            if (rankMatrix == rankAugmentedMatrix)
+            {
+                isTheSystemOfEquationsCompatible = true;
+            }
+
+
+            Console.WriteLine();
+
+            Console.WriteLine($"Rank(A) = {rankMatrix}");
+
+            Console.WriteLine();
+
+            Console.WriteLine($"Rank(A|B) = {rankAugmentedMatrix}");
+
+            Console.WriteLine();
+
+            return isTheSystemOfEquationsCompatible;
+        }
+
     }
 }

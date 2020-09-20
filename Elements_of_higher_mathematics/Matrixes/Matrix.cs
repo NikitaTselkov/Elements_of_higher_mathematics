@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -684,14 +685,22 @@ namespace Elements_of_higher_mathematics.Matrixes
                         resultValue = 0;
                     }
 
+                    var iterator = 0;
                     do
                     {
-                        result = Math.Round(MatrixValue[column, row] * multiplier + MatrixValue[column + 1, row], 2);
+                        iterator++;
+
+                        result = MatrixValue[column, row] * multiplier + MatrixValue[column + 1, row];
 
                         if (result != resultValue)
                         {
                             multiplier += 0.1 * multiplier2;
                             multiplier = Math.Round(multiplier, 2);
+                        }
+                        if (iterator == 100)
+                        {
+                            matrixResult.MatrixValue = MatrixValue;
+                            goto End;
                         }
                     }
                     while (result != resultValue);
@@ -714,6 +723,8 @@ namespace Elements_of_higher_mathematics.Matrixes
                     {
                          matrixResult = SwapColumnsOrRows(row + 1, row + 2);
                     }
+
+                    End:
 
                     MatrixValue = matrixResult.MatrixValue;
                 }
