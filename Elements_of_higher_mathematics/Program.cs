@@ -35,26 +35,31 @@ namespace Elements_of_higher_mathematics
 
             var matrix2_2_27 = new Matrix(new double[3, 1] { { 1 }, { 0 }, { 1 } });
 
-            //var res = matrixA.MethodThatResetsTheColumnValues(0, 0);
 
-            //var res2 = res.MethodThatResetsTheColumnValues(1, 1);
 
-          //  Console.WriteLine(matrixD.FindRank());
+            var matrixK = new Matrix(new double[4, 4] { { 2, 1, 5, -1 }, { 3, 3, -2, -5 }, { 1, -1, 2, 3 }, { 3, 2, 7, -2 } });
+            var matrixK2 = new Matrix(new double[4, 1] { { 1 }, { 2 }, { 10 }, { 1 } });
 
-            var AugmentedMatrix = new AugmentedMatrix(matrix_2_27, matrix2_2_27);
 
-            Console.WriteLine(matrixEquationSystems.IsTheSystemOfEquationsCompatible(AugmentedMatrix));
+            var AugmentedMatrix = new AugmentedMatrix(matrixK, matrixK2);
+
+            var result = matrixEquationSystems.SolvingSystemLinearEquationsByKramerMethod(AugmentedMatrix);
+
+
+            //// var AugmentedMatrix = new AugmentedMatrix(matrix_2_27, matrix2_2_27);
+
+            // Console.WriteLine(matrixEquationSystems.StudyOfTheMatrixOnTheConsistency(AugmentedMatrix));
 
             //AugmentedMatrix.Matrix = AugmentedMatrix.Matrix.SwapColumnsOrRows(1, 2);
 
-            //for (int i = 0; i < res2.MatrixValue.GetLength(0); i++)
-            //{
-            //    for (int j = 0; j < res2.MatrixValue.GetLength(1); j++)
-            //    {
-            //        Console.Write($"{res2.MatrixValue[i, j]} ");
-            //    }
-            //    Console.WriteLine();
-            //}
+            for (int i = 0; i < result.MatrixValue.GetLength(0); i++)
+            {
+                for (int j = 0; j < result.MatrixValue.GetLength(1); j++)
+                {
+                    Console.Write($"{result.MatrixValue[i, j]} ");
+                }
+                Console.WriteLine();
+            }
 
         }
     }

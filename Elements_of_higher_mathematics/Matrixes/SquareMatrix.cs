@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection.Metadata.Ecma335;
 
 namespace Elements_of_higher_mathematics.Matrixes
@@ -198,8 +199,6 @@ namespace Elements_of_higher_mathematics.Matrixes
 
                 Console.WriteLine();
 
-
-
                 for (int i = 0; i < columnLength; i++)
                 {
                     if (i < columnLength - 1)
@@ -339,16 +338,52 @@ namespace Elements_of_higher_mathematics.Matrixes
         /// <returns> Определитель. </returns>
         public double FindDeterminant(Matrix matrix)
         {
+            Console.WriteLine();
+            Console.WriteLine("Нахождение определителя");
+            Console.WriteLine();
+
+            var savedMatrix = SaveMatrixValue(matrix);
+
             var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
             var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
             var determinant = 0.0;
 
             if (columnLength == rowLength)
             {
-               matrix = matrix.MethodThatResetsTheColumnValues(0, 0);
+                if (columnLength == 2)
+                {
+                    determinant = FindDeterminantOfTheSecondOrder(matrix);
+
+                    matrix = savedMatrix;
+
+                    Console.WriteLine();
+                    Console.WriteLine($"Определитель: {determinant}");
+
+                    return determinant;
+                }
+                else if (columnLength == 3)
+                {
+                    determinant = FindDeterminantOfTheThirdOrder(matrix);
+
+                    matrix = savedMatrix;
+
+                    Console.WriteLine();
+                    Console.WriteLine($"Определитель: {determinant}");
+
+                    return determinant;
+                }
+                else
+                {
+                    matrix = matrix.MethodThatResetsTheColumnValues(0, 0);
+
+                    determinant = FindDecompositionOfMatrix(matrix, 1, enumMatrix.column);
+
+                    matrix = savedMatrix;
+
+                    Console.WriteLine();
+                    Console.WriteLine($"Определитель: {determinant}");
+                }
             }
-           
-            determinant = FindDecompositionOfMatrix(matrix, 1, enumMatrix.column);
 
             return determinant;
         }
@@ -378,6 +413,29 @@ namespace Elements_of_higher_mathematics.Matrixes
             Console.WriteLine($"{matrix.MatrixValue[0, 0]} * {matrix.MatrixValue[1, 1]} = {result}");
 
             return result;
+        }
+
+        /// <summary>
+        /// Метод сохраняющий значения нетрицы.
+        /// </summary>
+        /// <param name="matrix"> Матрица. </param>
+        /// <returns> Матрица. </returns>
+        private Matrix SaveMatrixValue(Matrix matrix)
+        {
+            var columnLength = matrix.MatrixValue.GetLength(0); // длина колонки матрицы.
+            var rowLength = matrix.MatrixValue.GetLength(1); // длина строки матрицы.
+
+            var newMatrix = new Matrix(new double[columnLength, rowLength]);
+
+            for (int i = 0; i < columnLength; i++)
+            {
+                for (int j = 0; j < rowLength; j++)
+                {
+                    newMatrix.MatrixValue[i, j] = matrix.MatrixValue[i, j];
+                }
+            }
+
+            return newMatrix;
         }
 
         /// <summary>
