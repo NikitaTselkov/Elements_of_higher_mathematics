@@ -27,20 +27,40 @@
         <Grid
             Background="{StaticResource Gray}">
 
-            <DataGrid
-                ColumnWidth="50"
-                ItemsSource="{Binding MatrixA}"
-                AutoGenerateColumns="True"
-                CanUserAddRows="false">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100*"/>
+                <RowDefinition Height="50*"/>
+            </Grid.RowDefinitions>
 
-             
+            <Viewbox 
+                Margin="45">
 
-            </DataGrid>
+                <Grid 
+                    Background="{StaticResource White}">
 
+                    <DataGrid
+                        Margin="3 -8 3 3"
+                        ItemsSource="{Binding MatrixA}"
+                        AutoGenerateColumns="True"
+                        CanUserAddRows="false"
+                        CanUserReorderColumns="False"
+                        CanUserSortColumns="False"
+                        CanUserResizeColumns="False"
+                        CanUserResizeRows="False"
+                        GridLinesVisibility="None"    
+                        Style="{StaticResource MatrixDataGrid}"
+                        CellStyle="{StaticResource CellsMatrixDataGrid}"
+                        RowStyle="{StaticResource RowMatrixDataGrid}">
+
+                    </DataGrid>
+                </Grid>
+
+            </Viewbox>
 
             <Viewbox
-                Margin="50 50"
-                VerticalAlignment="Bottom">
+                Margin="50 0 50 50"
+                VerticalAlignment="Bottom"
+                Grid.Row="1">
 
                 <DockPanel
                     HorizontalAlignment="Center">

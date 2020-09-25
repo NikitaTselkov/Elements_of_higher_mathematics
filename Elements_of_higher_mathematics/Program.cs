@@ -1,4 +1,5 @@
-﻿using Elements_of_higher_mathematics.Matrixes;
+﻿using Elements_of_higher_mathematics.ComplexNumbers;
+using Elements_of_higher_mathematics.Matrixes;
 using System;
 using System.Net.Http.Headers;
 
@@ -8,12 +9,13 @@ namespace Elements_of_higher_mathematics
     {
         static void Main(string[] args)
         {
-            //# region squareMatrix
+            # region Matrix
 
             SquareMatrix squareMatrix = new SquareMatrix();
             Matrix matrix = new Matrix();
             MatrixEquationSystems matrixEquationSystems = new MatrixEquationSystems();
             AugmentedMatrix augmentedMatrix = new AugmentedMatrix();
+            
 
 
             var matrixA = new Matrix(new double[3, 5] { { 2, -1, 3, -2, 4 }, { 4, -2, 5, 1, 7 }, { 2, -1, 1, 8, 2 } });
@@ -43,23 +45,24 @@ namespace Elements_of_higher_mathematics
 
             var AugmentedMatrix = new AugmentedMatrix(matrixK, matrixK2);
 
-            var result = matrixEquationSystems.SolvingSystemLinearEquationsByKramerMethod(AugmentedMatrix);
+            #endregion
+
+            var z = new ComplexNumber("3y - 3xi - x + 2yi + 10i - 6");
+
+            var z2 = new ComplexNumber("3x + 2i - 3yi + 5");
+
+            var z3 = new ComplexNumber("(5 - 3i) / 2");
 
 
-            //// var AugmentedMatrix = new AugmentedMatrix(matrix_2_27, matrix2_2_27);
+            z.MethodLeadingToStandardView();
+            z2.MethodLeadingToStandardView();
+            z3.MethodLeadingToStandardView();
 
-            // Console.WriteLine(matrixEquationSystems.StudyOfTheMatrixOnTheConsistency(AugmentedMatrix));
 
-            //AugmentedMatrix.Matrix = AugmentedMatrix.Matrix.SwapColumnsOrRows(1, 2);
+            Console.WriteLine(z);
+            Console.WriteLine(z2);
+            Console.WriteLine(z3);
 
-            for (int i = 0; i < result.MatrixValue.GetLength(0); i++)
-            {
-                for (int j = 0; j < result.MatrixValue.GetLength(1); j++)
-                {
-                    Console.Write($"{result.MatrixValue[i, j]} ");
-                }
-                Console.WriteLine();
-            }
 
         }
     }

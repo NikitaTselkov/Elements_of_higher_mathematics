@@ -373,18 +373,19 @@ namespace Elements_of_higher_mathematics.Matrixes
                 }
             }
 
-            Console.WriteLine();
-            Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
-            Console.WriteLine();
-            for (int i = 0; i < columnLength; i++)
-            {
-                for (int j = 0; j < rowLength; j++)
-                {
-                    Console.Write($"{newMatrix.MatrixValue[i, j]} ");
-                }
+            
                 Console.WriteLine();
-            }
-
+                Console.WriteLine($"Множмтель: {newMatrix.CommonMultiplier}");
+                Console.WriteLine();
+                for (int i = 0; i < columnLength; i++)
+                {
+                    for (int j = 0; j < rowLength; j++)
+                    {
+                        Console.Write($"{newMatrix.MatrixValue[i, j]} ");
+                    }
+                    Console.WriteLine();
+                }
+            
             Console.WriteLine();
 
             MatrixValue = newMatrix.MatrixValue;
