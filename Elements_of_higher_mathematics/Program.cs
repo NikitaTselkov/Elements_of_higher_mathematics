@@ -2,6 +2,7 @@
 using Elements_of_higher_mathematics.Matrixes;
 using System;
 using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 
 namespace Elements_of_higher_mathematics
 {
@@ -53,11 +54,25 @@ namespace Elements_of_higher_mathematics
 
             var z3 = new ComplexNumber("(5 - 3i) / 2");
 
+            var z4 = new ComplexNumber(5, "-i");
+
+            var z5 = new ComplexNumber(0, "4i");
+
+
+
 
             z.MethodLeadingToStandardView();
             z2.MethodLeadingToStandardView();
             z3.MethodLeadingToStandardView();
 
+            var t = z4 - z5;
+            var t2 = z4 + z5;
+            var t4 = z5.Pow(2, false);
+            var t5 = z4 / z5;
+
+            Console.WriteLine(t5);
+
+            Console.WriteLine();
 
             Console.WriteLine(z);
             Console.WriteLine(z2);
