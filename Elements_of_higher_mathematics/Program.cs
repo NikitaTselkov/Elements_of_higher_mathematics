@@ -59,7 +59,7 @@ namespace Elements_of_higher_mathematics
             var z5 = new ComplexNumber(0, "4i");
 
 
-            Console.WriteLine(z.PowImaginaryPart(17));
+            Console.WriteLine(z.Sqrt(0.35));
 
 
             //z.MethodLeadingToStandardView();

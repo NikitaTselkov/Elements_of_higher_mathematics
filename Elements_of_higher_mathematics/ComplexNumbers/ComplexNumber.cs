@@ -416,6 +416,30 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
             return result;
         }
 
+        public string Sqrt(double number)
+        {
+            // Результат.
+            var result = "";
+
+            // Если число отрицательное.
+            if (number < 0)
+            {
+                // Убирает -.
+                number *= -1;
+
+                // Находит корень действительной части и добавляет i.
+                result = Math.Sqrt(number).ToString() + "i";
+            }
+            else
+            {
+                // Находит корень действительной части.
+                result = Math.Sqrt(number).ToString();
+            }
+           
+            // Возвращает результат.
+            return result;
+        }
+
         /// <summary>
         /// Сокращает дробь если возможно.
         /// </summary>
