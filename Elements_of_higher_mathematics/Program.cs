@@ -59,24 +59,25 @@ namespace Elements_of_higher_mathematics
             var z5 = new ComplexNumber(0, "4i");
 
 
+            Console.WriteLine(z.PowImaginaryPart(17));
 
 
-            z.MethodLeadingToStandardView();
-            z2.MethodLeadingToStandardView();
-            z3.MethodLeadingToStandardView();
+            //z.MethodLeadingToStandardView();
+            //z2.MethodLeadingToStandardView();
+            //z3.MethodLeadingToStandardView();
 
-            var t = z4 - z5;
-            var t2 = z4 + z5;
-            var t4 = z5.Pow(2, false);
-            var t5 = z4 / z5;
+            //var t = z4 - z5;
+            //var t2 = z4 + z5;
+            //var t4 = z5.Pow(2, false);
+            //var t5 = z4 / z5;
 
-            Console.WriteLine(t5);
+            //Console.WriteLine(t5);
 
-            Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.WriteLine(z);
-            Console.WriteLine(z2);
-            Console.WriteLine(z3);
+            //Console.WriteLine(z);
+            //Console.WriteLine(z2);
+            //Console.WriteLine(z3);
 
 
         }

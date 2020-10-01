@@ -391,6 +391,32 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
         }
 
         /// <summary>
+        /// Метод находящий степень мнимой еденицы.
+        /// </summary>
+        /// <param name="degree"> Степень. </param>
+        /// <returns> Число возведенное в степень. </returns>
+        public string PowImaginaryPart(int degree)
+        {
+            // Результат.
+            var result = "";
+
+            // Проверка является ли степень четным.
+            if (degree % 2 == 0)
+            {
+                // Если да то в ответе получается число.
+                result = Math.Pow(-1, degree / 2).ToString();
+            }
+            else
+            {
+                // Если нет то в ответе получается i.
+                result = $"{Math.Pow(-1, (degree - 1) / 2)}i";
+            }
+
+            // Возвращает ответ.
+            return result;
+        }
+
+        /// <summary>
         /// Сокращает дробь если возможно.
         /// </summary>
         /// <param name="dividend"> Делимое. </param>
