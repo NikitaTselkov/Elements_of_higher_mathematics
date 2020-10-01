@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 
 namespace Elements_of_higher_mathematics.ComplexNumbers
 {
@@ -416,6 +417,11 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
             return result;
         }
 
+        /// <summary>
+        /// Метод нахдящий корень отрицательного числа.
+        /// </summary>
+        /// <param name="number"> Число. </param>
+        /// <returns> Результат вычислений. </returns>
         public string Sqrt(double number)
         {
             // Результат.
@@ -437,6 +443,49 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
             }
            
             // Возвращает результат.
+            return result;
+        }
+
+        /// <summary>
+        /// Метод находящий модуль комплексного числа.
+        /// </summary>
+        /// <returns> Модуль. </returns>
+        public string FindModule()
+        {
+            // Действительная часть.
+            var realPart = RealPart;
+
+            // Мнимая часть.
+            var imaginaryPart = ImaginaryPart;
+
+            // Убирает i из мнимой части.
+            imaginaryPart = String.Join("", imaginaryPart.Split("i"));
+
+            // Действительная часть.
+            var a = Convert.ToDouble(realPart);
+
+            // Мнимая часть.
+            var b = Convert.ToDouble(imaginaryPart);
+
+            // Результат. 
+            var result = "";
+
+            // Расчитывает модуль по формуле Sqrt(Pow(a, 2) + Pow(b, 2)).
+            var module = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+
+            // Является ли число целым.
+            if (Convert.ToInt32(module) == Convert.ToDouble(module))
+            {
+                // Модуль в виде целого числа.
+                result = module.ToString();
+            }
+            else
+            {
+                // Модуль в виде корня.
+                result = $"Sqrt({Math.Pow(a, 2) + Math.Pow(b, 2)})";
+            }
+
+            // Возвращает модуль.
             return result;
         }
 

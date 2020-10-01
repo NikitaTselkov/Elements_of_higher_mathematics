@@ -54,12 +54,12 @@ namespace Elements_of_higher_mathematics
 
             var z3 = new ComplexNumber("(5 - 3i) / 2");
 
-            var z4 = new ComplexNumber(5, "-i");
+            var z4 = new ComplexNumber(3, -4);
 
             var z5 = new ComplexNumber(0, "4i");
 
 
-            Console.WriteLine(z.Sqrt(0.35));
+            Console.WriteLine(z4.FindModule());
 
 
             //z.MethodLeadingToStandardView();
