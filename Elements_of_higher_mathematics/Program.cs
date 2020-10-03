@@ -40,11 +40,13 @@ namespace Elements_of_higher_mathematics
 
 
 
-            var matrixK = new Matrix(new double[4, 4] { { 2, 1, 5, -1 }, { 3, 3, -2, -5 }, { 1, -1, 2, 3 }, { 3, 2, 7, -2 } });
+            var matrixK = new Matrix(new double[4, 4] { { 1, -2, 3, -1 }, { 3, 3, -2, -5 }, { 1, -1, 2, 3 }, { 3, 2, 7, -2 } });
             var matrixK2 = new Matrix(new double[4, 1] { { 1 }, { 2 }, { 10 }, { 1 } });
 
 
             var AugmentedMatrix = new AugmentedMatrix(matrixK, matrixK2);
+
+           // var y = AugmentedMatrix.MethodOfKramer(AugmentedMatrix);
 
             #endregion
 
@@ -54,12 +56,12 @@ namespace Elements_of_higher_mathematics
 
             var z3 = new ComplexNumber("(5 - 3i) / 2");
 
-            var z4 = new ComplexNumber(3, -4);
+            var z4 = new ComplexNumber(Math.Sqrt(3), -1);
 
-            var z5 = new ComplexNumber(0, "4i");
+            var z5 = new ComplexNumber(5, "-15i");
 
 
-            Console.WriteLine(z4.FindModule());
+            Console.WriteLine(z5.Sqrt(-46, false));
 
 
             //z.MethodLeadingToStandardView();
@@ -70,6 +72,7 @@ namespace Elements_of_higher_mathematics
             //var t2 = z4 + z5;
             //var t4 = z5.Pow(2, false);
             //var t5 = z4 / z5;
+           // var t6 = z4.FindArg(true);
 
             //Console.WriteLine(t5);
 

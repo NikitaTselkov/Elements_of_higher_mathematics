@@ -234,6 +234,8 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
             {
                 result = Multiplication(result, result, isOutputToConsole);
             }
+            
+            //TODO: Вывод в консоль.
 
             //Возвращает результат.
             return result;
@@ -357,7 +359,7 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
         /// <param name="b"> Второе число. </param>
         /// <param name="isOutputToConsole"> Выводить ли информацию в консоль. </param>
         /// <returns> Частное двух комплексных чисел. </returns>
-        public static ComplexNumber Division(ComplexNumber a, ComplexNumber b, bool isOutputToConsole = true)
+        public static ComplexNumber Division(ComplexNumber a, ComplexNumber b, bool isOutputToConsole = false)
         {
             //Убирает i из мнимых чисел.
             a.ImaginaryPart = String.Join("", a.ImaginaryPart.Split("i"));
@@ -395,8 +397,9 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
         /// Метод находящий степень мнимой еденицы.
         /// </summary>
         /// <param name="degree"> Степень. </param>
+        /// <param name="isOutputToConsole"> Выводить ли информацию в консоль. </param>
         /// <returns> Число возведенное в степень. </returns>
-        public string PowImaginaryPart(int degree)
+        public string PowImaginaryPart(int degree, bool isOutputToConsole = false)
         {
             // Результат.
             var result = "";
@@ -413,6 +416,26 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
                 result = $"{Math.Pow(-1, (degree - 1) / 2)}i";
             }
 
+            //-------Вывод в консоль----------
+            if (isOutputToConsole == true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Найти степень мнимой еденицы");
+                Console.WriteLine();
+
+                if (degree % 2 == 0)
+                {
+                    Console.Write($"i^{degree} = (i^2)^{degree / 2} = (-1)^{degree / 2} = {result}");
+                }
+                else
+                {
+                    Console.Write($"i^{degree} = (i^2)^{(degree - 1) / 2} * i = (-1)^{(degree - 1) / 2} * i = {result}");
+                }
+
+                Console.WriteLine();
+            }
+            //-------Вывод в консоль----------
+
             // Возвращает ответ.
             return result;
         }
@@ -421,9 +444,30 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
         /// Метод нахдящий корень отрицательного числа.
         /// </summary>
         /// <param name="number"> Число. </param>
+        /// <param name="isOutputToConsole"> Выводить ли информацию в консоль. </param>
         /// <returns> Результат вычислений. </returns>
-        public string Sqrt(double number)
+        public string Sqrt(double number, bool isOutputToConsole = false)
         {
+            //-------Вывод в консоль----------
+            if (isOutputToConsole == true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Найти корень отрицательного числа");
+                Console.WriteLine();
+
+                if (number < 0)
+                {
+                    Console.Write($"Sqrt({number}) = Sqrt({number * -1} * (-1)) = Sqrt({number * -1} * (i^2)) = {Sqrt(number)}");
+                }
+                else
+                {
+                    Console.Write($"Sqrt({number}) = {Sqrt(number)}");
+                }
+
+                Console.WriteLine();
+            }
+            //-------Вывод в консоль----------
+
             // Результат.
             var result = "";
 
@@ -441,7 +485,7 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
                 // Находит корень действительной части.
                 result = Math.Sqrt(number).ToString();
             }
-           
+
             // Возвращает результат.
             return result;
         }
@@ -449,8 +493,9 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
         /// <summary>
         /// Метод находящий модуль комплексного числа.
         /// </summary>
+        /// <param name="isOutputToConsole"> Выводить ли информацию в консоль. </param>
         /// <returns> Модуль. </returns>
-        public string FindModule()
+        public string FindModule(bool isOutputToConsole = false)
         {
             // Действительная часть.
             var realPart = RealPart;
@@ -471,7 +516,7 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
             var result = "";
 
             // Расчитывает модуль по формуле Sqrt(Pow(a, 2) + Pow(b, 2)).
-            var module = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+            var module = Math.Round(Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2)));
 
             // Является ли число целым.
             if (Convert.ToInt32(module) == Convert.ToDouble(module))
@@ -485,7 +530,145 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
                 result = $"Sqrt({Math.Pow(a, 2) + Math.Pow(b, 2)})";
             }
 
+            //-------Вывод в консоль----------
+            if (isOutputToConsole == true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Найти модуль комплексного числа");
+                Console.WriteLine();
+
+                Console.WriteLine($"|z| = Sqrt(Pow({a}, 2) + Pow({b}, 2) = Sqrt({Math.Round(Math.Pow(a, 2), 2)} + {Math.Round(Math.Pow(b, 2), 2)}) = {result}");
+
+                Console.WriteLine();
+            }
+            //-------Вывод в консоль----------
+
             // Возвращает модуль.
+            return result;
+        }
+
+        /// <summary>
+        /// Метод находящий агрумент комплексного числа.
+        /// </summary>
+        /// <param name="isOutputToConsole"> Выводить ли информацию в консоль. </param>
+        /// <returns> Агрумент комплексного числа. </returns>
+        public string FindArg(bool isOutputToConsole = false)
+        {
+            // Действительная часть.
+            var realPart = Convert.ToDouble(RealPart);
+
+            // Мнимая часть.
+            var imaginaryPart = Convert.ToDouble(String.Join("", ImaginaryPart.Split("i")));
+
+            // Аргумент.
+            var arg = "";
+
+            // Радианы.
+            var radians = 0.0;
+
+            #region Выбор формулы.
+
+            if (realPart > 0 && imaginaryPart >= 0)
+            {
+                radians = Math.Atan(imaginaryPart / realPart);
+            }
+            else if (realPart < 0 && imaginaryPart >= 0)
+            {
+                radians = (Math.PI - Math.Atan(Math.Abs(imaginaryPart / realPart)));
+            }
+            else if (realPart < 0 && imaginaryPart < 0)
+            {
+                radians = (Math.PI + Math.Atan(Math.Abs(imaginaryPart / realPart)));
+            }
+            else if (realPart > 0 && imaginaryPart < 0)
+            {
+                radians = (2 * Math.PI - Math.Atan(Math.Abs(imaginaryPart / realPart)));
+            }
+            else if (realPart == 0 && imaginaryPart > 0)
+            {
+                radians = (Math.PI / 2);
+            }
+            else if (realPart == 0 && imaginaryPart < 0)
+            {
+                radians = (3 * Math.PI / 2);
+            }
+
+            #endregion
+
+            // Перевод из числа с плавающей точкой в дробное.
+            arg = ConversionFromRadiansToFractions(radians);
+
+            //-------Вывод в консоль----------
+            if (isOutputToConsole == true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Найти агрумент комплексного числа");
+                Console.WriteLine();
+
+                #region Выбор формулы.
+
+                if (realPart > 0 && imaginaryPart >= 0)
+                {
+                    Console.Write($"Atan({imaginaryPart} / {realPart})");
+                }
+                else if (realPart < 0 && imaginaryPart >= 0)
+                {
+                    Console.Write($"PI - Atan(Abs({imaginaryPart} / {realPart}))");
+                }
+                else if (realPart < 0 && imaginaryPart < 0)
+                {
+                    Console.Write($"PI + Atan(Abs({imaginaryPart} / {realPart}))");
+                }
+                else if (realPart > 0 && imaginaryPart < 0)
+                {
+                    Console.Write($"2 * PI - Atan(Abs({imaginaryPart} / {realPart}))");
+                }
+                else if (realPart == 0 && imaginaryPart > 0)
+                {
+                    Console.Write("PI / 2)");
+                }
+                else if (realPart == 0 && imaginaryPart < 0)
+                {
+                    Console.Write("3 * PI / 2)");
+                }
+
+                #endregion
+
+                Console.Write($" = {arg}");
+
+                Console.WriteLine();
+            }
+            //-------Вывод в консоль----------
+
+            // Возвращает аргумент.
+            return arg;
+        }
+
+        /// <summary>
+        /// Метод конвертирующий число с плавающей точкой в дробное.
+        /// </summary>
+        /// <param name="radians"> Радиана. </param>
+        /// <returns> Радиана в виде дроби. </returns>
+        private string ConversionFromRadiansToFractions(double radians)
+        {
+            // Градусы.
+            var degrees = 0.0;
+
+            // НОД.
+            var gcf = 0.0;
+
+            // Результат.
+            var result = "";
+
+            // Перевод из радиан в градусы.
+            degrees = Math.Round((radians * 180) / Math.PI, 2);
+
+            // нахождение НОД.
+            gcf = GCF(degrees, 180);
+
+            result = $"({degrees / gcf} PI) / {180 / gcf}";
+
+            // Возвращает результат.
             return result;
         }
 
@@ -530,7 +713,6 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
                 }
             }
             
-
             //Возвращает результат.
             return new ComplexNumber(realPart, imaginaryPart);
         }
