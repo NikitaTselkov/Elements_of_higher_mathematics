@@ -516,7 +516,7 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
             var result = "";
 
             // Расчитывает модуль по формуле Sqrt(Pow(a, 2) + Pow(b, 2)).
-            var module = Math.Round(Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2)));
+            var module = Math.Sqrt(Math.Round(Math.Pow(a, 2) + Math.Pow(b, 2)));
 
             // Является ли число целым.
             if (Convert.ToInt32(module) == Convert.ToDouble(module))
@@ -642,6 +642,15 @@ namespace Elements_of_higher_mathematics.ComplexNumbers
 
             // Возвращает аргумент.
             return arg;
+        }
+
+        public void GettingSystem(ComplexNumber z1, ComplexNumber z2)
+        {
+            // Приведение Комплексных чисел к стандартному виду.
+            z1.MethodLeadingToStandardView();
+            z2.MethodLeadingToStandardView();
+
+
         }
 
         /// <summary>

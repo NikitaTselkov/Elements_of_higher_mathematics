@@ -1,5 +1,6 @@
 ﻿using Elements_of_higher_mathematics.ComplexNumbers;
 using Elements_of_higher_mathematics.Matrixes;
+using Elements_of_higher_mathematics.SystemOfEquations;
 using System;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
@@ -46,25 +47,36 @@ namespace Elements_of_higher_mathematics
 
             var AugmentedMatrix = new AugmentedMatrix(matrixK, matrixK2);
 
-           // var y = AugmentedMatrix.MethodOfKramer(AugmentedMatrix);
+            // var y = AugmentedMatrix.MethodOfKramer(AugmentedMatrix);
 
             #endregion
 
-            var z = new ComplexNumber("3y - 3xi - x + 2yi + 10i - 6");
+            #region ComplexNumber
 
-            var z2 = new ComplexNumber("3x + 2i - 3yi + 5");
+            //var z = new ComplexNumber("3y - 3xi - x + 2yi + 10i - 6");
 
-            var z3 = new ComplexNumber("(5 - 3i) / 2");
+            //var z2 = new ComplexNumber("3x + 2i - 3yi + 5");
 
-            var z4 = new ComplexNumber(Math.Sqrt(3), -1);
+            //var z3 = new ComplexNumber("(5 - 3i) / 2");
 
-            var z5 = new ComplexNumber(5, "-15i");
+            //var z4 = new ComplexNumber(Math.Sqrt(3), -1);
+
+            //var z5 = new ComplexNumber(5, "-15i");
+
+            //var V27N1z1 = new ComplexNumber("x^2 + yi - 12");
+            
+            //var V27N1z2 = new ComplexNumber("-y - x^2i - 4i");
+
+            // V27N1z1.MethodLeadingToStandardView();
+            // V27N1z2.MethodLeadingToStandardView();
+
+            // Console.WriteLine(V27N1z1);
+            // Console.WriteLine(V27N1z2);
+
+            // Console.WriteLine(z5.FindModule(true));
 
 
-            Console.WriteLine(z5.Sqrt(-46, false));
-
-
-            //z.MethodLeadingToStandardView();
+            // z.MethodLeadingToStandardView();
             //z2.MethodLeadingToStandardView();
             //z3.MethodLeadingToStandardView();
 
@@ -72,16 +84,38 @@ namespace Elements_of_higher_mathematics
             //var t2 = z4 + z5;
             //var t4 = z5.Pow(2, false);
             //var t5 = z4 / z5;
-           // var t6 = z4.FindArg(true);
+            // var t6 = z4.FindArg(true);
 
             //Console.WriteLine(t5);
 
             //Console.WriteLine();
 
-            //Console.WriteLine(z);
+            // Console.WriteLine(z);
             //Console.WriteLine(z2);
             //Console.WriteLine(z3);
 
+
+            #endregion
+
+            Equations z1 = new Equations("x^2 - 12", "-y");
+            Equations z2 = new Equations("y", "x^2 + 4");
+
+            СSystemOfEquations systemOfEquations = new СSystemOfEquations(z1, z2);
+
+
+            foreach (var item in systemOfEquations.SystemOfEquations)
+            {
+                Console.WriteLine("{" + item.ToString());
+            }
+
+            Console.WriteLine();
+
+            systemOfEquations.SystemOfEquations[1] = systemOfEquations.SystemOfEquations[1].MovingFromLeftToRight(1, 1);
+
+            foreach (var item in systemOfEquations.SystemOfEquations)
+            {              
+                Console.WriteLine("{" + item.ToString());
+            }
 
         }
     }
